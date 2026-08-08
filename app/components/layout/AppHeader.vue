@@ -32,7 +32,13 @@ const scrollToSection = (event: Event, href: string) => {
 <template>
   <header class="header">
     <a href="#inicio" class="logo" @click="scrollToSection($event, '#inicio')">
-      <img src="/icon.jpeg" alt="Vive Patrimonio" class="logo-img" />
+      <span class="logo-circle">
+        <img src="/icon.jpeg" alt="VP" />
+      </span>
+      <span class="logo-text">
+        <strong>VIVE</strong>
+        <small>PATRIMONIO</small>
+      </span>
     </a>
 
     <button
@@ -78,11 +84,41 @@ const scrollToSection = (event: Event, href: string) => {
 .logo {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.logo-img {
-  height: 48px;
-  width: auto;
+.logo-circle {
+  width: 43px;
+  height: 43px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text strong {
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: #fff;
+}
+
+.logo-text small {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
 }
 
 .nav {
@@ -122,8 +158,9 @@ const scrollToSection = (event: Event, href: string) => {
     padding: 0 18px;
   }
 
-  .logo-img {
-    height: 40px;
+  .logo-circle {
+    width: 38px;
+    height: 38px;
   }
 
   .menu-button {
@@ -150,8 +187,18 @@ const scrollToSection = (event: Event, href: string) => {
 }
 
 @include respond(mobile-sm) {
-  .logo-img {
-    height: 36px;
+  .logo-circle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .logo-text strong {
+    font-size: 13px;
+    letter-spacing: 3px;
+  }
+
+  .logo-text small {
+    font-size: 7px;
   }
 }
 </style>
