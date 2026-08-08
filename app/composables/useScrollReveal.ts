@@ -2,26 +2,40 @@ export const useScrollReveal = () => {
   const observe = (selector: string = '[data-reveal]') => {
     if (import.meta.server) return
 
-    const targets = document.querySelectorAll(selector)
+    let io: IntersectionObserver | null = null
 
-    if (!('IntersectionObserver' in window) || !targets.length) {
-      targets.forEach((el) => el.classList.add('is-visible'))
-      return
+    const getObserver = () => {
+      if (io) return io
+      if (!('IntersectionObserver' in window)) return null
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              io?.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.12 }
+      )
+      return io
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            io.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.12 }
-    )
+    const reveal = (el: Element) => {
+      if (el.classList.contains('is-visible')) return
+      const observer = getObserver()
+      if (observer) observer.observe(el)
+      else el.classList.add('is-visible')
+    }
 
-    targets.forEach((el) => io.observe(el))
+    const scan = () => {
+      document.querySelectorAll(selector).forEach(reveal)
+    }
+
+    scan()
+
+    const mo = new MutationObserver(scan)
+    mo.observe(document.body, { childList: true, subtree: true })
   }
 
   return {
