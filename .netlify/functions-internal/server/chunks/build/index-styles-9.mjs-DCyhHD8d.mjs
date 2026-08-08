@@ -1,5 +1,0 @@
-//#region app/components/ui/FoodItem.vue?vue&type=style&index=0&scoped=2be4dd1b&inline&used&lang.scss
-var FoodItem_vue_vue_type_style_index_0_scoped_2be4dd1b_inline_used_lang_default = "[data-v-2be4dd1b]:root{--green:#123b32;--green-dark:#09251f;--gold:#c99a4a;--cream:#f5efe3;--white:#fff;--black:#111;--gray:#6e6e6e;--border:#123b3226}.food-row[data-v-2be4dd1b]{align-items:baseline;gap:10px;display:flex}.food-name[data-v-2be4dd1b]{color:var(--green);white-space:nowrap;font-family:Cormorant Garamond,serif;font-size:21px;font-weight:600}.food-dots[data-v-2be4dd1b]{border-bottom:1px dotted var(--border);flex:1;transform:translateY(-4px)}.food-price[data-v-2be4dd1b]{color:var(--green);white-space:nowrap;font-size:14px;font-weight:700}.food-desc[data-v-2be4dd1b]{color:var(--gray);max-width:60ch;margin-top:6px;font-size:13px;line-height:1.6}@media (width<=700px){.food-name[data-v-2be4dd1b]{font-size:18px}}";
-
-export { FoodItem_vue_vue_type_style_index_0_scoped_2be4dd1b_inline_used_lang_default as F };
-//# sourceMappingURL=index-styles-9.mjs-DCyhHD8d.mjs.map
