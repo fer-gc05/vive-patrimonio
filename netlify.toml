@@ -14,7 +14,3 @@
   from = "/*"
   to = "/.netlify/functions/server"
   status = 200
-
-[[functions]]
-  function = "keep-alive"
-  schedule = "0 0 * * *"
