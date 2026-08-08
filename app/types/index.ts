@@ -49,4 +49,7 @@ export interface Settings {
   instagram_url: string
   hero_title: string
   hero_subtitle: string
+  hero_image_url: string | null
+  hero_video_url: string | null
+  experience_image_url: string | null
 }

@@ -16,7 +16,10 @@ const form = ref({
   whatsapp_number: '',
   instagram_url: '',
   hero_title: '',
-  hero_subtitle: ''
+  hero_subtitle: '',
+  hero_image_url: '',
+  hero_video_url: '',
+  experience_image_url: ''
 })
 
 const fetchSettings = async () => {
@@ -134,6 +137,40 @@ onMounted(fetchSettings)
                 rows="3"
                 placeholder="Una experiencia frente al río Sinú..."
               ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Imágenes del sitio</h2>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <AdminImageUpload
+                v-model="form.hero_image_url"
+                bucket="site"
+                label="Imagen de fondo del Hero"
+              />
+              <small>Imagen principal que se muestra detrás del título. Formato JPEG o PNG.</small>
+            </div>
+
+            <div class="form-group full-width">
+              <label>URL del video del Hero (opcional)</label>
+              <input
+                v-model="form.hero_video_url"
+                type="url"
+                placeholder="https://ejemplo.com/video.mp4"
+              />
+              <small>Se muestra en pantallas de escritorio. Si está vacío, solo se muestra la imagen.</small>
+            </div>
+
+            <div class="form-group full-width">
+              <AdminImageUpload
+                v-model="form.experience_image_url"
+                bucket="site"
+                label="Imagen de la sección Experiencia"
+              />
+              <small>Imagen que aparece al lado del texto "El río es parte de nosotros".</small>
             </div>
           </div>
         </div>

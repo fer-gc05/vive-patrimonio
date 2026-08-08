@@ -56,17 +56,22 @@ create table settings (
   whatsapp_number text,
   instagram_url text,
   hero_title text,
-  hero_subtitle text
+  hero_subtitle text,
+  hero_image_url text,
+  hero_video_url text,
+  experience_image_url text
 );
 
 -- Insertar configuración inicial
-insert into settings (id, whatsapp_number, instagram_url, hero_title, hero_subtitle)
+insert into settings (id, whatsapp_number, instagram_url, hero_title, hero_subtitle, hero_image_url, experience_image_url)
 values (
   1,
   '573001234567',
   'https://www.instagram.com/vivepatrimoni0/',
   'Vive el río. Vive Patrimonio.',
-  'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
+  'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.',
+  '/img/hero.jpg',
+  '/img/atardecer.jpg'
 );
 
 -- Habilitar RLS (Row Level Security)
