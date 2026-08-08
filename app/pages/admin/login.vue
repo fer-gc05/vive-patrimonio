@@ -165,4 +165,11 @@ onMounted(async () => {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px;
+    margin: 16px;
+  }
+}
 </style>

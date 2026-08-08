@@ -3,6 +3,7 @@ const supabase = useSupabase()
 const router = useRouter()
 const user = ref<any>(null)
 const loading = ref(true)
+const sidebarOpen = ref(false)
 
 onMounted(async () => {
   const { data: { user } } = await supabase.auth.getUser()
@@ -18,6 +19,10 @@ const logout = async () => {
   await supabase.auth.signOut()
   router.push('/admin/login')
 }
+
+const closeSidebar = () => {
+  sidebarOpen.value = false
+}
 </script>
 
 <template>
@@ -25,25 +30,37 @@ const logout = async () => {
     <div class="spinner"></div>
   </div>
   <div v-else class="admin-layout">
-    <aside class="sidebar">
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="closeSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-header">
-        <h2>Admin Panel</h2>
+        <div class="sidebar-header-top">
+          <h2>Admin Panel</h2>
+          <button class="close-sidebar" @click="closeSidebar">✕</button>
+        </div>
         <p v-if="user">{{ user.email }}</p>
       </div>
       <nav class="sidebar-nav">
-        <NuxtLink to="/admin">Dashboard</NuxtLink>
-        <NuxtLink to="/admin/drinks">Bebidas</NuxtLink>
-        <NuxtLink to="/admin/dishes">Comida</NuxtLink>
-        <NuxtLink to="/admin/tours">Tours</NuxtLink>
-        <NuxtLink to="/admin/gallery">Galería</NuxtLink>
-        <NuxtLink to="/admin/settings">Configuración</NuxtLink>
+        <NuxtLink to="/admin" @click="closeSidebar">Dashboard</NuxtLink>
+        <NuxtLink to="/admin/drinks" @click="closeSidebar">Bebidas</NuxtLink>
+        <NuxtLink to="/admin/dishes" @click="closeSidebar">Comida</NuxtLink>
+        <NuxtLink to="/admin/tours" @click="closeSidebar">Tours</NuxtLink>
+        <NuxtLink to="/admin/gallery" @click="closeSidebar">Galería</NuxtLink>
+        <NuxtLink to="/admin/settings" @click="closeSidebar">Configuración</NuxtLink>
       </nav>
       <div class="sidebar-footer">
-        <NuxtLink to="/">Ver sitio</NuxtLink>
+        <NuxtLink to="/" @click="closeSidebar">Ver sitio</NuxtLink>
         <button @click="logout" class="logout-btn">Cerrar sesión</button>
       </div>
     </aside>
     <main class="admin-main">
+      <div class="topbar">
+        <button class="hamburger" @click="sidebarOpen = true" aria-label="Abrir menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <span class="topbar-title">Admin</span>
+      </div>
       <slot />
     </main>
   </div>
@@ -80,6 +97,10 @@ const logout = async () => {
   background: #f5f5f5;
 }
 
+.sidebar-overlay {
+  display: none;
+}
+
 .sidebar {
   background: #1a1a1a;
   color: #fff;
@@ -92,6 +113,12 @@ const logout = async () => {
   margin-bottom: 40px;
 }
 
+.sidebar-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .sidebar-header h2 {
   font-size: 20px;
   margin-bottom: 8px;
@@ -100,6 +127,16 @@ const logout = async () => {
 .sidebar-header p {
   font-size: 12px;
   color: #888;
+}
+
+.close-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
 }
 
 .sidebar-nav {
@@ -154,5 +191,81 @@ const logout = async () => {
 .admin-main {
   padding: 40px;
   overflow-y: auto;
+}
+
+.topbar {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: 100;
+    transition: left 0.3s ease;
+    padding-top: 24px;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .close-sidebar {
+    display: block;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #1a1a1a;
+    border-radius: 2px;
+  }
+
+  .topbar-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .admin-main {
+    padding: 20px;
+  }
 }
 </style>

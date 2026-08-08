@@ -155,13 +155,12 @@ onMounted(fetchSettings)
             </div>
 
             <div class="form-group full-width">
-              <label>URL del video del Hero (opcional)</label>
-              <input
+              <AdminVideoUpload
                 v-model="form.hero_video_url"
-                type="url"
-                placeholder="https://ejemplo.com/video.mp4"
+                bucket="site"
+                label="Video del Hero (opcional)"
               />
-              <small>Se muestra en pantallas de escritorio. Si está vacío, solo se muestra la imagen.</small>
+              <small>Se muestra en pantallas de escritorio. Sube el video en la mejor calidad posible (MP4 recomendado). Si está vacío, solo se muestra la imagen.</small>
             </div>
 
             <div class="form-group full-width">
@@ -310,5 +309,23 @@ onMounted(fetchSettings)
   color: #065f46;
   font-size: 14px;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .settings-card {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
 }
 </style>

@@ -340,4 +340,39 @@ onMounted(fetchGallery)
 .btn-icon.danger:hover {
   background: rgba(220, 38, 38, 0.8);
 }
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .page-header .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .modal {
+    margin: 16px;
+    padding: 20px;
+    max-height: calc(100vh - 32px);
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
 </style>

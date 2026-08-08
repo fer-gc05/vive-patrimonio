@@ -456,4 +456,43 @@ td {
 .btn-icon.danger:hover {
   background: #fee2e2;
 }
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .page-header .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 650px;
+  }
+
+  .modal {
+    margin: 16px;
+    padding: 20px;
+    max-height: calc(100vh - 32px);
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
 </style>
