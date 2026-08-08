@@ -99,8 +99,6 @@ const toggleSidebar = () => {
 }
 
 .admin-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
   min-height: 100vh;
   background: #f5f5f5;
 }
@@ -219,7 +217,10 @@ const toggleSidebar = () => {
 }
 
 .topbar {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
 }
 
 .hamburger {
@@ -242,10 +243,6 @@ const toggleSidebar = () => {
 }
 
 @media (max-width: 768px) {
-  .admin-layout {
-    grid-template-columns: 1fr;
-  }
-
   .sidebar-overlay {
     display: block;
     position: fixed;
@@ -278,13 +275,6 @@ const toggleSidebar = () => {
 
   .toggle-sidebar {
     display: none;
-  }
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
   }
 
   .hamburger {
