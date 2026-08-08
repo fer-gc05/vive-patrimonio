@@ -3,10 +3,10 @@ import type { Tour } from '~/composables/useTours'
 
 interface Props {
   tour: Tour
-  whatsappLink: string
 }
 
 defineProps<Props>()
+const emit = defineEmits<{ (e: 'click', tour: Tour): void }>()
 
 const hasError = ref(false)
 
@@ -17,47 +17,37 @@ const formatPrice = (price: number | null) => {
 </script>
 
 <template>
-  <NuxtLink :to="'/tours/' + tour.id" class="tour-link" data-reveal>
-    <article class="tour">
-      <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
-        <img
-          v-if="tour.image_url"
-          :key="tour.image_url"
-          :src="tour.image_url"
-          :alt="tour.name"
-          loading="lazy"
-          @error="hasError = true"
-          @load="hasError = false"
-        />
+  <article class="tour" data-reveal @click="emit('click', tour)">
+    <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
+      <img
+        v-if="tour.image_url"
+        :key="tour.image_url"
+        :src="tour.image_url"
+        :alt="tour.name"
+        loading="lazy"
+        @error="hasError = true"
+        @load="hasError = false"
+      />
+    </div>
+    <div class="tour-content">
+      <h3>{{ tour.name }}</h3>
+      <span class="tour-duration">{{ tour.duration }} MIN</span>
+      <p>{{ tour.description }}</p>
+      <div class="tour-footer">
+        <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small v-if="tour.type">· {{ tour.type }}</small></span>
       </div>
-      <div class="tour-content">
-        <h3>{{ tour.name }}</h3>
-        <span class="tour-duration">{{ tour.duration }} MIN</span>
-        <p>{{ tour.description }}</p>
-        <div class="tour-footer">
-          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small v-if="tour.type">· {{ tour.type }}</small></span>
-          <a :href="whatsappLink" class="tour-button" target="_blank" rel="noopener" @click.stop>
-            Reservar
-          </a>
-        </div>
-      </div>
-    </article>
-  </NuxtLink>
+    </div>
+  </article>
 </template>
 
 <style scoped lang="scss">
-.tour-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
 .tour {
   background: var(--cream);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: 0.35s;
+  cursor: pointer;
 }
 
 .tour:hover {
@@ -132,23 +122,6 @@ const formatPrice = (price: number | null) => {
     font-weight: 400;
     color: var(--gray);
   }
-}
-
-.tour-button {
-  border: 1px solid var(--green);
-  color: var(--green);
-  padding: 10px 16px;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  transition: 0.3s;
-  white-space: nowrap;
-}
-
-.tour-button:hover {
-  background: var(--green);
-  color: #fff;
 }
 
 @include respond(tablet) {

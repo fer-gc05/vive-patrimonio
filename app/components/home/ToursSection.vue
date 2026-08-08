@@ -1,8 +1,19 @@
 <script setup lang="ts">
+import type { Tour } from '~/composables/useTours'
+
 const { fetchTours, getWhatsappLink } = useTours()
 const { fetchSettings } = useSettings()
-const tours = ref([])
+const tours = ref<Tour[]>([])
 const whatsappNumber = ref('')
+const selectedTour = ref<Tour | null>(null)
+
+const openModal = (tour: Tour) => {
+  selectedTour.value = tour
+}
+
+const closeModal = () => {
+  selectedTour.value = null
+}
 
 onMounted(async () => {
   const [toursData, settings] = await Promise.all([fetchTours(), fetchSettings()])
@@ -29,13 +40,20 @@ onMounted(async () => {
         v-for="tour in tours"
         :key="tour.id"
         :tour="tour"
-        :whatsapp-link="getWhatsappLink(tour.whatsapp_message, whatsappNumber)"
+        @click="openModal"
       />
     </div>
 
     <p class="food-note">
       * Duraciones y precios de referencia — ajústalos a tus recorridos reales.
     </p>
+
+    <UiTourModal
+      v-if="selectedTour"
+      :tour="selectedTour"
+      :whatsapp-link="getWhatsappLink(selectedTour.whatsapp_message, whatsappNumber)"
+      @close="closeModal"
+    />
   </section>
 </template>
 
