@@ -17,12 +17,14 @@ onMounted(async () => {
 <template>
   <section class="experience" id="experiencia">
     <div class="experience-image">
-      <img
-        v-if="loaded"
-        :src="experienceImageUrl"
-        alt="Experiencia en Vive Patrimonio"
-        loading="lazy"
-      />
+      <Transition name="img-fade">
+        <img
+          v-if="loaded"
+          :src="experienceImageUrl"
+          alt="Experiencia en Vive Patrimonio"
+          loading="lazy"
+        />
+      </Transition>
     </div>
     <div class="experience-content">
       <UiSectionLabel>La experiencia</UiSectionLabel>
@@ -50,6 +52,14 @@ onMounted(async () => {
 .experience-image img {
   height: 100%;
   object-fit: cover;
+}
+
+.img-fade-enter-active {
+  transition: opacity 1s ease;
+}
+
+.img-fade-enter-from {
+  opacity: 0;
 }
 
 .experience-content {

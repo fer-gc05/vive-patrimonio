@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const { fetchSettings } = useSettings()
-const heroTitle = ref('Vive el río.<br><em>Vive Patrimonio.</em>')
+const heroTitle = ref('Vive el río.\nVive Patrimonio.')
 const heroSubtitle = ref(
   'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
 )
 const heroImageUrl = ref('')
 const heroVideoUrl = ref('')
 const loaded = ref(false)
+
+const heroTitleHtml = computed(() => heroTitle.value.replace(/\n/g, '<br>'))
 
 onMounted(async () => {
   const settings = await fetchSettings()
@@ -42,16 +44,18 @@ onMounted(async () => {
     >
       <source :src="heroVideoUrl" type="video/mp4" />
     </video>
-    <img
-      v-if="loaded"
-      :src="heroImageUrl"
-      alt="Vive Patrimonio sobre el río Sinú"
-      class="hero-image"
-    />
+    <Transition name="hero-fade">
+      <img
+        v-if="loaded"
+        :src="heroImageUrl"
+        alt="Vive Patrimonio sobre el río Sinú"
+        class="hero-image"
+      />
+    </Transition>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <span class="eyebrow">BAR · RESTAURANTE · TOURS · RÍO SINÚ</span>
-      <h1 v-html="heroTitle"></h1>
+      <h1 v-html="heroTitleHtml"></h1>
       <p v-html="heroSubtitle"></p>
       <div class="hero-actions">
         <UiMainButton href="#carta">VER CARTA</UiMainButton>
@@ -89,6 +93,14 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-fade-enter-active {
+  transition: opacity 1s ease;
+}
+
+.hero-fade-enter-from {
+  opacity: 0;
 }
 
 .hero-overlay {

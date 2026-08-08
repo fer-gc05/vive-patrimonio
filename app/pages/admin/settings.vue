@@ -122,12 +122,12 @@ onMounted(fetchSettings)
 
           <div class="form-grid">
             <div class="form-group full-width">
-              <label>Título principal</label>
-              <input
+              <label>Título principal (usá Enter para salto de línea)</label>
+              <textarea
                 v-model="form.hero_title"
-                type="text"
-                placeholder="Vive el río. Vive Patrimonio."
-              />
+                rows="2"
+                placeholder="Vive el río.&#10;Vive Patrimonio."
+              ></textarea>
             </div>
 
             <div class="form-group full-width">
