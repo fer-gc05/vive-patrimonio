@@ -4,8 +4,9 @@ const heroTitle = ref('Vive el río.<br><em>Vive Patrimonio.</em>')
 const heroSubtitle = ref(
   'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
 )
-const heroImageUrl = ref('/img/hero.jpg')
+const heroImageUrl = ref('')
 const heroVideoUrl = ref('')
+const loaded = ref(false)
 
 onMounted(async () => {
   const settings = await fetchSettings()
@@ -17,17 +18,20 @@ onMounted(async () => {
   }
   if (settings?.hero_image_url) {
     heroImageUrl.value = settings.hero_image_url
+  } else {
+    heroImageUrl.value = '/img/hero.jpg'
   }
   if (settings?.hero_video_url) {
     heroVideoUrl.value = settings.hero_video_url
   }
+  loaded.value = true
 })
 </script>
 
 <template>
   <section class="hero" id="inicio">
     <video
-      v-if="heroVideoUrl"
+      v-if="loaded && heroVideoUrl"
       class="hero-video"
       autoplay
       muted
@@ -39,6 +43,7 @@ onMounted(async () => {
       <source :src="heroVideoUrl" type="video/mp4" />
     </video>
     <img
+      v-if="loaded"
       :src="heroImageUrl"
       alt="Vive Patrimonio sobre el río Sinú"
       class="hero-image"

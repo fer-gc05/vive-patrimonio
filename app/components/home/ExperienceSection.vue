@@ -1,12 +1,16 @@
 <script setup lang="ts">
 const { fetchSettings } = useSettings()
-const experienceImageUrl = ref('/img/atardecer.jpg')
+const experienceImageUrl = ref('')
+const loaded = ref(false)
 
 onMounted(async () => {
   const settings = await fetchSettings()
   if (settings?.experience_image_url) {
     experienceImageUrl.value = settings.experience_image_url
+  } else {
+    experienceImageUrl.value = '/img/atardecer.jpg'
   }
+  loaded.value = true
 })
 </script>
 
@@ -14,6 +18,7 @@ onMounted(async () => {
   <section class="experience" id="experiencia">
     <div class="experience-image">
       <img
+        v-if="loaded"
         :src="experienceImageUrl"
         alt="Experiencia en Vive Patrimonio"
         loading="lazy"
