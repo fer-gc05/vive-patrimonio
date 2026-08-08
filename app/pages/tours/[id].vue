@@ -3,10 +3,12 @@ import type { Tour } from '~/composables/useTours'
 
 const route = useRoute()
 const supabase = useSupabase()
+const { fetchSettings } = useSettings()
 
 const tour = ref<Tour | null>(null)
 const loading = ref(true)
 const notFound = ref(false)
+const whatsappNumber = ref('')
 
 const formatPrice = (price: number | null) => {
   if (!price) return null
@@ -14,22 +16,25 @@ const formatPrice = (price: number | null) => {
 }
 
 const getWhatsappLink = (message: string) => {
-  const number = '573001234567'
-  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
+  return `https://wa.me/${whatsappNumber.value}?text=${encodeURIComponent(message)}`
 }
 
 onMounted(async () => {
-  const { data, error } = await supabase
-    .from('tours')
-    .select('*')
-    .eq('id', route.params.id)
-    .single()
+  const [tourResult, settings] = await Promise.all([
+    supabase.from('tours').select('*').eq('id', route.params.id).single(),
+    fetchSettings()
+  ])
 
-  if (error || !data) {
+  if (tourResult.error || !tourResult.data) {
     notFound.value = true
   } else {
-    tour.value = data as Tour
+    tour.value = tourResult.data as Tour
   }
+
+  if (settings?.whatsapp_number) {
+    whatsappNumber.value = settings.whatsapp_number
+  }
+
   loading.value = false
 })
 

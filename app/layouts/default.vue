@@ -4,5 +4,6 @@
     <slot />
     <LayoutAppFooter />
     <LayoutWhatsAppFloat />
+    <UiBackToTop />
   </div>
 </template>

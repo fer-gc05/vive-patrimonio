@@ -1,9 +1,15 @@
 <script setup lang="ts">
 const { fetchTours, getWhatsappLink } = useTours()
+const { fetchSettings } = useSettings()
 const tours = ref([])
+const whatsappNumber = ref('')
 
 onMounted(async () => {
-  tours.value = await fetchTours()
+  const [toursData, settings] = await Promise.all([fetchTours(), fetchSettings()])
+  tours.value = toursData
+  if (settings?.whatsapp_number) {
+    whatsappNumber.value = settings.whatsapp_number
+  }
 })
 </script>
 
@@ -23,7 +29,7 @@ onMounted(async () => {
         v-for="tour in tours"
         :key="tour.id"
         :tour="tour"
-        :whatsapp-link="getWhatsappLink(tour.whatsapp_message)"
+        :whatsapp-link="getWhatsappLink(tour.whatsapp_message, whatsappNumber)"
       />
     </div>
 

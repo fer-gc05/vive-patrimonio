@@ -18,7 +18,7 @@ export const useTours = () => {
     return data as Tour[]
   }
 
-  const getWhatsappLink = (message: string, number: string = '573001234567') => {
+  const getWhatsappLink = (message: string, number: string) => {
     return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
   }
 
