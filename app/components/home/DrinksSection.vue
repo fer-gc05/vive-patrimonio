@@ -31,7 +31,13 @@ onMounted(async () => {
       @select="selectCategory"
     />
 
-    <div class="drinks-grid">
+    <p v-if="drinks.length === 0" class="empty-state">
+      No hay bebidas disponibles por el momento.
+    </p>
+    <p v-else-if="filteredDrinks.length === 0" class="empty-state">
+      No hay bebidas disponibles en esta categoría.
+    </p>
+    <div v-else class="drinks-grid">
       <UiDrinkCard
         v-for="drink in filteredDrinks"
         :key="drink.id"
@@ -77,6 +83,15 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
+}
+
+.empty-state {
+  max-width: 600px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 @include respond(desktop) {

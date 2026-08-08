@@ -18,7 +18,10 @@ onMounted(async () => {
       </p>
     </div>
 
-    <div class="food-groups">
+    <p v-if="foodGroups.length === 0" class="empty-state">
+      No hay platos disponibles por el momento.
+    </p>
+    <div v-else class="food-groups">
       <UiFoodGroup
         v-for="(group, index) in foodGroups"
         :key="`${group.group}-${index}`"
@@ -77,6 +80,15 @@ onMounted(async () => {
   font-size: 11px;
   letter-spacing: 0.5px;
   font-style: italic;
+}
+
+.empty-state {
+  max-width: 600px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 @include respond(tablet) {

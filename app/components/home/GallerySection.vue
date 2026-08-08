@@ -13,7 +13,10 @@ onMounted(async () => {
       <UiSectionLabel>Galería</UiSectionLabel>
       <h2>Vive el momento.</h2>
     </div>
-    <div class="gallery-grid">
+    <p v-if="images.length === 0" class="empty-state">
+      No hay fotos disponibles por el momento.
+    </p>
+    <div v-else class="gallery-grid">
       <img
         v-for="(image, index) in images"
         :key="image.id"
@@ -59,6 +62,15 @@ onMounted(async () => {
 
 .gallery-grid img:first-child {
   grid-row: span 2;
+}
+
+.empty-state {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 @include respond(tablet) {

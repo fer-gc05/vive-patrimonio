@@ -15,7 +15,10 @@ onMounted(async () => {
       <p>Recorridos guiados por el río Sinú, pensados para grupos, familias y parejas.</p>
     </div>
 
-    <div class="tours-grid">
+    <p v-if="tours.length === 0" class="empty-state">
+      No hay tours disponibles por el momento.
+    </p>
+    <div v-else class="tours-grid">
       <UiTourCard
         v-for="tour in tours"
         :key="tour.id"
@@ -76,6 +79,15 @@ onMounted(async () => {
   font-size: 11px;
   letter-spacing: 0.5px;
   font-style: italic;
+}
+
+.empty-state {
+  max-width: 600px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 @include respond(desktop) {
