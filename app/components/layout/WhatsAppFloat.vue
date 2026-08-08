@@ -1,5 +1,15 @@
 <script setup lang="ts">
-const whatsappLink = 'https://wa.me/573001234567'
+const { fetchSettings } = useSettings()
+const whatsappNumber = ref('573001234567')
+
+const whatsappLink = computed(() => `https://wa.me/${whatsappNumber.value}`)
+
+onMounted(async () => {
+  const settings = await fetchSettings()
+  if (settings?.whatsapp_number) {
+    whatsappNumber.value = settings.whatsapp_number
+  }
+})
 </script>
 
 <template>

@@ -20,7 +20,7 @@ onMounted(async () => {
         v-for="tour in tours"
         :key="tour.id"
         :tour="tour"
-        :whatsapp-link="getWhatsappLink(tour.whatsappMessage)"
+        :whatsapp-link="getWhatsappLink(tour.whatsapp_message)"
       />
     </div>
 

@@ -1,6 +1,19 @@
 <script setup lang="ts">
-const whatsappLink = 'https://wa.me/573001234567'
-const instagramLink = 'https://www.instagram.com/vivepatrimoni0/'
+const { fetchSettings } = useSettings()
+const whatsappNumber = ref('573001234567')
+const instagramUrl = ref('https://www.instagram.com/vivepatrimoni0/')
+
+const whatsappLink = computed(() => `https://wa.me/${whatsappNumber.value}`)
+
+onMounted(async () => {
+  const settings = await fetchSettings()
+  if (settings?.whatsapp_number) {
+    whatsappNumber.value = settings.whatsapp_number
+  }
+  if (settings?.instagram_url) {
+    instagramUrl.value = settings.instagram_url
+  }
+})
 </script>
 
 <template>
@@ -13,7 +26,7 @@ const instagramLink = 'https://www.instagram.com/vivepatrimoni0/'
         <a :href="whatsappLink" class="contact-button" target="_blank" rel="noopener">
           WhatsApp
         </a>
-        <a :href="instagramLink" class="contact-button" target="_blank" rel="noopener">
+        <a :href="instagramUrl" class="contact-button" target="_blank" rel="noopener">
           Instagram
         </a>
       </div>

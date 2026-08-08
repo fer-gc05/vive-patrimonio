@@ -1,3 +1,21 @@
+<script setup lang="ts">
+const { fetchSettings } = useSettings()
+const heroTitle = ref('Vive el río.<br><em>Vive Patrimonio.</em>')
+const heroSubtitle = ref(
+  'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
+)
+
+onMounted(async () => {
+  const settings = await fetchSettings()
+  if (settings?.hero_title) {
+    heroTitle.value = settings.hero_title
+  }
+  if (settings?.hero_subtitle) {
+    heroSubtitle.value = settings.hero_subtitle
+  }
+})
+</script>
+
 <template>
   <section class="hero" id="inicio">
     <video
@@ -19,11 +37,8 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <span class="eyebrow">BAR · RESTAURANTE · TOURS · RÍO SINÚ</span>
-      <h1>Vive el río.<br><em>Vive Patrimonio.</em></h1>
-      <p>
-        Una experiencia frente al río Sinú, acompañada de bebidas, sabores,
-        tours en lancha y atardeceres inolvidables.
-      </p>
+      <h1 v-html="heroTitle"></h1>
+      <p v-html="heroSubtitle"></p>
       <div class="hero-actions">
         <UiMainButton href="#carta">VER CARTA</UiMainButton>
         <UiGhostButton href="#tours">VER TOURS</UiGhostButton>

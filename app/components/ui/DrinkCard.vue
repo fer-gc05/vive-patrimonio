@@ -9,7 +9,7 @@ const props = defineProps<Props>()
 
 const hasError = ref(false)
 
-watch(() => props.drink.image, () => {
+watch(() => props.drink.image_url, () => {
   hasError.value = false
 })
 
@@ -24,17 +24,17 @@ const onImageLoad = () => {
 
 <template>
   <article class="drink" data-reveal>
-    <div class="drink-photo" :class="{ 'no-photo': !drink.image || hasError }">
+    <div class="drink-photo" :class="{ 'no-photo': !drink.image_url || hasError }">
       <img
-        v-if="drink.image"
-        :key="drink.image"
-        :src="drink.image"
+        v-if="drink.image_url"
+        :key="drink.image_url"
+        :src="drink.image_url"
         :alt="drink.name"
         loading="lazy"
         @error="onImageError"
         @load="onImageLoad"
       />
-      <span>{{ drink.categoryLabel }}</span>
+      <span>{{ drink.category_label }}</span>
     </div>
     <div class="drink-content">
       <h3>{{ drink.name }}</h3>

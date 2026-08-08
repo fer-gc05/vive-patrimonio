@@ -10,7 +10,7 @@ const props = defineProps<Props>()
 
 const hasError = ref(false)
 
-watch(() => props.tour.image, () => {
+watch(() => props.tour.image_url, () => {
   hasError.value = false
 })
 
@@ -25,11 +25,11 @@ const onImageLoad = () => {
 
 <template>
   <article class="tour" data-reveal>
-    <div class="tour-photo" :class="{ 'no-photo': !tour.image || hasError }">
+    <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
       <img
-        v-if="tour.image"
-        :key="tour.image"
-        :src="tour.image"
+        v-if="tour.image_url"
+        :key="tour.image_url"
+        :src="tour.image_url"
         :alt="tour.name"
         loading="lazy"
         @error="onImageError"
