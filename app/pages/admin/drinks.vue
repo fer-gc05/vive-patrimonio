@@ -30,7 +30,8 @@ const categories = [
   { value: 'daiquiris', label: 'Daiquiris', categoryLabel: 'Daiquiri' },
   { value: 'clasicos', label: 'Clásicos', categoryLabel: 'Clásico' },
   { value: 'sodas', label: 'Sodas', categoryLabel: 'Soda' },
-  { value: 'cervezas', label: 'Cervezas', categoryLabel: 'Cerveza' }
+  { value: 'cervezas', label: 'Cervezas', categoryLabel: 'Cerveza' },
+  { value: 'otras', label: 'Otras bebidas', categoryLabel: 'Otra' }
 ]
 
 const fetchDrinks = async () => {

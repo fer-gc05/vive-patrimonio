@@ -23,7 +23,8 @@ create table dishes (
   category text not null,
   description text,
   price integer,
-  sort_order integer default 0
+  sort_order integer default 0,
+  available boolean default true
 );
 
 -- Tabla de tours

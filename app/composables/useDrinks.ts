@@ -24,7 +24,8 @@ export const useDrinks = () => {
     { key: 'daiquiris', label: 'Daiquiris' },
     { key: 'clasicos', label: 'Clásicos' },
     { key: 'sodas', label: 'Sodas' },
-    { key: 'cervezas', label: 'Cervezas' }
+    { key: 'cervezas', label: 'Cervezas' },
+    { key: 'otras', label: 'Otras bebidas' }
   ]
 
   return {

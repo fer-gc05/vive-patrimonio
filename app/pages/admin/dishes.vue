@@ -19,7 +19,8 @@ const form = ref({
   category: 'entradas',
   description: '',
   price: null as number | null,
-  sort_order: 0
+  sort_order: 0,
+  available: true
 })
 
 const categoryOrder = ['entradas', 'hamburguesas', 'desgranados', 'picadas']
@@ -60,7 +61,8 @@ const openForm = (dish?: Dish) => {
       category: 'entradas',
       description: '',
       price: null,
-      sort_order: 0
+      sort_order: 0,
+      available: true
     }
   }
   showForm.value = true
@@ -202,6 +204,13 @@ onMounted(fetchDishes)
               <label>Orden</label>
               <input v-model.number="form.sort_order" type="number" min="0" />
             </div>
+
+            <div class="form-group">
+              <label>
+                <input v-model="form.available" type="checkbox" />
+                Disponible
+              </label>
+            </div>
           </div>
 
           <div class="form-actions">
@@ -220,6 +229,7 @@ onMounted(fetchDishes)
             <th>Categoría</th>
             <th>Descripción</th>
             <th>Precio</th>
+            <th>Disponible</th>
             <th>Orden</th>
             <th>Acciones</th>
           </tr>
@@ -230,6 +240,11 @@ onMounted(fetchDishes)
             <td>{{ dish.category }}</td>
             <td class="desc-cell">{{ dish.description || '-' }}</td>
             <td>{{ formatPrice(dish.price) }}</td>
+            <td>
+              <span :class="['status', dish.available ? 'available' : 'unavailable']">
+                {{ dish.available ? 'Sí' : 'No' }}
+              </span>
+            </td>
             <td>{{ dish.sort_order }}</td>
             <td class="actions-cell">
               <button @click="openForm(dish)" class="btn-icon">✏️</button>
@@ -407,6 +422,11 @@ onMounted(fetchDishes)
   border-color: #123b32;
 }
 
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
 .form-actions {
   display: flex;
   gap: 12px;
@@ -452,6 +472,23 @@ td {
   color: #666;
   font-size: 13px;
   max-width: 300px;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.unavailable {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .actions-cell {

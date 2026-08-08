@@ -17,6 +17,7 @@ export const useDishes = () => {
     const { data, error } = await supabase
       .from('dishes')
       .select('*')
+      .eq('available', true)
       .order('sort_order', { ascending: true })
 
     if (error) {

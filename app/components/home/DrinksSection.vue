@@ -6,7 +6,7 @@ const drinks = ref<Drink[]>([])
 const activeCategory = ref('todos')
 const selectedDrink = ref<Drink | null>(null)
 
-const categoryOrder = ['margaritas', 'daiquiris', 'clasicos', 'sodas', 'cervezas']
+const categoryOrder = ['margaritas', 'daiquiris', 'clasicos', 'sodas', 'cervezas', 'otras']
 
 const filteredDrinks = computed(() => {
   if (activeCategory.value === 'todos') {

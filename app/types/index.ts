@@ -19,6 +19,7 @@ export interface Dish {
   description: string
   price: number | null
   sort_order: number
+  available: boolean
 }
 
 export interface Tour {
