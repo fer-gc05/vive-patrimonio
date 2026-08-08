@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import type { Drink } from '~/composables/useDrinks'
+
 const { fetchDrinks, categories } = useDrinks()
-const drinks = ref([])
+const drinks = ref<Drink[]>([])
 const activeCategory = ref('todos')
+const selectedDrink = ref<Drink | null>(null)
 
 const filteredDrinks = computed(() => {
   if (activeCategory.value === 'todos') return drinks.value
@@ -10,6 +13,14 @@ const filteredDrinks = computed(() => {
 
 const selectCategory = (key: string) => {
   activeCategory.value = key
+}
+
+const openModal = (drink: Drink) => {
+  selectedDrink.value = drink
+}
+
+const closeModal = () => {
+  selectedDrink.value = null
 }
 
 onMounted(async () => {
@@ -42,8 +53,11 @@ onMounted(async () => {
         v-for="drink in filteredDrinks"
         :key="drink.id"
         :drink="drink"
+        @click="openModal"
       />
     </div>
+
+    <UiDrinkModal v-if="selectedDrink" :drink="selectedDrink" @close="closeModal" />
   </section>
 </template>
 

@@ -5,25 +5,19 @@ interface Props {
   drink: Drink
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
+const emit = defineEmits<{ (e: 'click', drink: Drink): void }>()
 
 const hasError = ref(false)
 
-watch(() => props.drink.image_url, () => {
-  hasError.value = false
-})
-
-const onImageError = () => {
-  hasError.value = true
-}
-
-const onImageLoad = () => {
-  hasError.value = false
+const formatPrice = (price: number | null) => {
+  if (!price) return null
+  return '$' + price.toLocaleString('es-CO')
 }
 </script>
 
 <template>
-  <article class="drink" data-reveal>
+  <article class="drink" data-reveal @click="emit('click', drink)">
     <div class="drink-photo" :class="{ 'no-photo': !drink.image_url || hasError }">
       <img
         v-if="drink.image_url"
@@ -31,13 +25,14 @@ const onImageLoad = () => {
         :src="drink.image_url"
         :alt="drink.name"
         loading="lazy"
-        @error="onImageError"
-        @load="onImageLoad"
+        @error="hasError = true"
+        @load="hasError = false"
       />
       <span>{{ drink.category_label }}</span>
     </div>
     <div class="drink-content">
       <h3>{{ drink.name }}</h3>
+      <span v-if="formatPrice(drink.price)" class="drink-price">{{ formatPrice(drink.price) }}</span>
       <p>{{ drink.description }}</p>
     </div>
   </article>
@@ -48,6 +43,7 @@ const onImageLoad = () => {
   background: var(--cream);
   overflow: hidden;
   transition: 0.35s;
+  cursor: pointer;
 }
 
 .drink:hover {
@@ -94,6 +90,14 @@ const onImageLoad = () => {
   font-size: 28px;
   color: var(--green);
   margin-bottom: 10px;
+}
+
+.drink-price {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 8px;
 }
 
 .drink-content p {

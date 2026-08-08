@@ -6,51 +6,52 @@ interface Props {
   whatsappLink: string
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const hasError = ref(false)
 
-watch(() => props.tour.image_url, () => {
-  hasError.value = false
-})
-
-const onImageError = () => {
-  hasError.value = true
-}
-
-const onImageLoad = () => {
-  hasError.value = false
+const formatPrice = (price: number | null) => {
+  if (!price) return null
+  return '$' + price.toLocaleString('es-CO')
 }
 </script>
 
 <template>
-  <article class="tour" data-reveal>
-    <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
-      <img
-        v-if="tour.image_url"
-        :key="tour.image_url"
-        :src="tour.image_url"
-        :alt="tour.name"
-        loading="lazy"
-        @error="onImageError"
-        @load="onImageLoad"
-      />
-    </div>
-    <div class="tour-content">
-      <span class="tour-duration">{{ tour.duration }} · {{ tour.type }}</span>
-      <h3>{{ tour.name }}</h3>
-      <p>{{ tour.description }}</p>
-      <div class="tour-footer">
-        <span class="tour-price">{{ tour.price }}</span>
-        <a :href="whatsappLink" class="tour-button" target="_blank" rel="noopener">
-          Reservar
-        </a>
+  <NuxtLink :to="'/tours/' + tour.id" class="tour-link" data-reveal>
+    <article class="tour">
+      <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
+        <img
+          v-if="tour.image_url"
+          :key="tour.image_url"
+          :src="tour.image_url"
+          :alt="tour.name"
+          loading="lazy"
+          @error="hasError = true"
+          @load="hasError = false"
+        />
       </div>
-    </div>
-  </article>
+      <div class="tour-content">
+        <span class="tour-duration">{{ tour.duration }} · {{ tour.type }}</span>
+        <h3>{{ tour.name }}</h3>
+        <p>{{ tour.description }}</p>
+        <div class="tour-footer">
+          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }}</span>
+          <a :href="whatsappLink" class="tour-button" target="_blank" rel="noopener" @click.stop>
+            Reservar
+          </a>
+        </div>
+      </div>
+    </article>
+  </NuxtLink>
 </template>
 
 <style scoped lang="scss">
+.tour-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .tour {
   background: var(--cream);
   overflow: hidden;
