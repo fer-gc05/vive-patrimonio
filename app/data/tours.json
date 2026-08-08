@@ -1,0 +1,32 @@
+[
+  {
+    "id": "paseo-lancha",
+    "name": "Paseo en Lancha",
+    "duration": "45 MIN",
+    "type": "GRUPAL",
+    "description": "Recorrido guiado por el río Sinú, ideal para grupos y familias. Salidas cada hora.",
+    "price": "$25.000 / persona",
+    "image": "/img/hero.jpg",
+    "whatsappMessage": "Hola, quiero reservar el Paseo en Lancha"
+  },
+  {
+    "id": "tour-atardecer",
+    "name": "Tour Atardecer",
+    "duration": "1 H 30",
+    "type": "PAREJAS",
+    "description": "Incluye bebida de bienvenida y mirador privado para ver caer el sol sobre el río.",
+    "price": "$60.000 / persona",
+    "image": "/img/atardecer.jpg",
+    "whatsappMessage": "Hola, quiero reservar el Tour Atardecer"
+  },
+  {
+    "id": "tour-gastronomico",
+    "name": "Tour Gastronómico",
+    "duration": "2 H",
+    "type": "GRUPAL",
+    "description": "Recorrido por el río más degustación de tres platos típicos y una bebida de la carta.",
+    "price": "$85.000 / persona",
+    "image": "",
+    "whatsappMessage": "Hola, quiero reservar el Tour Gastronómico"
+  }
+]

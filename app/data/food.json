@@ -1,0 +1,62 @@
+[
+  {
+    "group": "Entradas",
+    "items": [
+      {
+        "name": "Patacones con hogao",
+        "price": "$12.000",
+        "description": "Plátano verde frito, hogao de tomate y cebolla, suero costeño."
+      },
+      {
+        "name": "Bolitas de pescado",
+        "price": "$18.000",
+        "description": "Pescado desmechado, especias criollas y salsa tártara casera."
+      },
+      {
+        "name": "Ceviche de camarón",
+        "price": "$28.000",
+        "description": "Leche de tigre cítrica, camarón fresco, cebolla morada y cilantro."
+      }
+    ]
+  },
+  {
+    "group": "Fuertes",
+    "items": [
+      {
+        "name": "Mojarra frita",
+        "price": "$32.000",
+        "description": "Con patacón, arroz de coco y ensalada de la casa."
+      },
+      {
+        "name": "Cazuela de mariscos",
+        "price": "$42.000",
+        "description": "Camarón, calamar y pescado en salsa de coco y jengibre."
+      },
+      {
+        "name": "Chuleta a la plancha",
+        "price": "$30.000",
+        "description": "Chuleta de cerdo, papa criolla y ensalada fresca."
+      },
+      {
+        "name": "Arroz de coco con camarones",
+        "price": "$35.000",
+        "description": "Arroz de coco, camarón salteado y tostones."
+      }
+    ]
+  },
+  {
+    "group": "Postres",
+    "items": [
+      {
+        "name": "Torta de coco",
+        "price": "$12.000",
+        "description": ""
+      },
+      {
+        "name": "Flan de queso",
+        "price": "$10.000",
+        "description": ""
+      }
+    ]
+  }
+]
