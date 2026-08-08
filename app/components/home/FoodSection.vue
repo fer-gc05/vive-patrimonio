@@ -8,7 +8,7 @@ const activeCategory = ref('todos')
 const filteredDishes = computed(() => {
   let result = dishes.value
   if (activeCategory.value !== 'todos') {
-    result = result.filter((dish) => dish.category === activeCategory.value)
+    result = result.filter((dish) => dish.category.toLowerCase() === activeCategory.value)
   }
   return [...result].sort((a, b) => {
     const orderA = categoryOrder.indexOf(a.category)
