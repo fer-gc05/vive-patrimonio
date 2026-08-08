@@ -11,6 +11,8 @@ const dishes = ref<Dish[]>([])
 const loading = ref(false)
 const showForm = ref(false)
 const editingDish = ref<Dish | null>(null)
+const activeCategory = ref('todos')
+const searchQuery = ref('')
 
 const form = ref({
   name: '',
@@ -118,6 +120,23 @@ const formatPrice = (price: number | null) => {
   return `$${price.toLocaleString('es-CO')}`
 }
 
+const filteredDishes = computed(() => {
+  let result = [...dishes.value].sort((a, b) => {
+    const orderA = categoryOrder.indexOf(a.category.toLowerCase())
+    const orderB = categoryOrder.indexOf(b.category.toLowerCase())
+    if (orderA !== orderB) return orderA - orderB
+    return a.sort_order - b.sort_order
+  })
+  if (activeCategory.value !== 'todos') {
+    result = result.filter((d) => d.category.toLowerCase() === activeCategory.value)
+  }
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.toLowerCase()
+    result = result.filter((d) => d.name.toLowerCase().includes(q))
+  }
+  return result
+})
+
 onMounted(fetchDishes)
 </script>
 
@@ -126,9 +145,27 @@ onMounted(fetchDishes)
     <div class="page-header">
       <div>
         <h1>Comida</h1>
-        <p>{{ dishes.length }} platos registrados</p>
+        <p>{{ filteredDishes.length }} de {{ dishes.length }} platos</p>
       </div>
       <button @click="openForm()" class="btn-primary">+ Agregar plato</button>
+    </div>
+
+    <div class="filters-bar">
+      <div class="search-box">
+        <input v-model="searchQuery" type="text" placeholder="Buscar plato..." />
+      </div>
+      <div class="category-filters">
+        <button
+          :class="['filter-btn', { active: activeCategory === 'todos' }]"
+          @click="activeCategory = 'todos'"
+        >Todas</button>
+        <button
+          v-for="cat in categories"
+          :key="cat"
+          :class="['filter-btn', { active: activeCategory === cat.toLowerCase() }]"
+          @click="activeCategory = cat.toLowerCase()"
+        >{{ cat }}</button>
+      </div>
     </div>
 
     <div v-if="showForm" class="modal-overlay" @click.self="closeForm">
@@ -188,7 +225,7 @@ onMounted(fetchDishes)
           </tr>
         </thead>
         <tbody>
-          <tr v-for="dish in sortedDishes" :key="dish.id">
+          <tr v-for="dish in filteredDishes" :key="dish.id">
             <td class="name-cell">{{ dish.name }}</td>
             <td>{{ dish.category }}</td>
             <td class="desc-cell">{{ dish.description || '-' }}</td>
@@ -225,6 +262,54 @@ onMounted(fetchDishes)
 .page-header p {
   color: #666;
   font-size: 14px;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-box input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #123b32;
+}
+
+.category-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: #123b32;
+}
+
+.filter-btn.active {
+  background: #123b32;
+  color: #fff;
+  border-color: #123b32;
 }
 
 .btn-primary {
