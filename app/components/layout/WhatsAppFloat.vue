@@ -29,10 +29,10 @@ onMounted(async () => {
 <style scoped lang="scss">
 .float-wa {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
+  bottom: 32px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
   background: #25d366;
   color: #fff;
   border-radius: 50%;
@@ -41,14 +41,42 @@ onMounted(async () => {
   z-index: 999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   transition: transform 0.3s;
+  animation: pulse 2s infinite;
 }
 
 .float-wa:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
+  animation: none;
 }
 
 .float-wa svg {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+@include respond(mobile) {
+  .float-wa {
+    bottom: 24px;
+    right: 16px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .float-wa svg {
+    width: 26px;
+    height: 26px;
+  }
 }
 </style>
