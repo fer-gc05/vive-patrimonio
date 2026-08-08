@@ -1,9 +1,40 @@
 <script setup lang="ts">
-const { fetchDishes } = useDishes()
-const foodGroups = ref([])
+import type { Dish } from '~/types'
+
+const { fetchDishes, categories, categoryOrder } = useDishes()
+const dishes = ref<Dish[]>([])
+const activeCategory = ref('todos')
+
+const filteredDishes = computed(() => {
+  let result = dishes.value
+  if (activeCategory.value !== 'todos') {
+    result = result.filter((dish) => dish.category === activeCategory.value)
+  }
+  return [...result].sort((a, b) => {
+    const orderA = categoryOrder.indexOf(a.category)
+    const orderB = categoryOrder.indexOf(b.category)
+    if (orderA !== orderB) return orderA - orderB
+    return a.sort_order - b.sort_order
+  })
+})
+
+const foodGroups = computed(() => {
+  const grouped: Record<string, Dish[]> = {}
+  filteredDishes.value.forEach((dish) => {
+    if (!grouped[dish.category]) {
+      grouped[dish.category] = []
+    }
+    grouped[dish.category].push(dish)
+  })
+  return Object.entries(grouped).map(([group, items]) => ({ group, items }))
+})
+
+const selectCategory = (key: string) => {
+  activeCategory.value = key
+}
 
 onMounted(async () => {
-  foodGroups.value = await fetchDishes()
+  dishes.value = await fetchDishes()
 })
 </script>
 
@@ -18,8 +49,17 @@ onMounted(async () => {
       </p>
     </div>
 
-    <p v-if="foodGroups.length === 0" class="empty-state">
+    <UiCategoryFilter
+      :categories="categories"
+      :active="activeCategory"
+      @select="selectCategory"
+    />
+
+    <p v-if="dishes.length === 0" class="empty-state">
       No hay platos disponibles por el momento.
+    </p>
+    <p v-else-if="foodGroups.length === 0" class="empty-state">
+      No hay platos disponibles en esta categoría.
     </p>
     <div v-else class="food-groups">
       <UiFoodGroup

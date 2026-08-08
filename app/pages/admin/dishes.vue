@@ -14,13 +14,23 @@ const editingDish = ref<Dish | null>(null)
 
 const form = ref({
   name: '',
-  category: 'Entradas',
+  category: 'entradas',
   description: '',
   price: null as number | null,
   sort_order: 0
 })
 
-const categories = ['Entradas', 'Fuertes', 'Postres']
+const categoryOrder = ['entradas', 'hamburguesas', 'desgranados', 'picadas']
+const categories = ['Entradas', 'Hamburguesas', 'Desgranados', 'Picadas']
+
+const sortedDishes = computed(() => {
+  return [...dishes.value].sort((a, b) => {
+    const orderA = categoryOrder.indexOf(a.category.toLowerCase())
+    const orderB = categoryOrder.indexOf(b.category.toLowerCase())
+    if (orderA !== orderB) return orderA - orderB
+    return a.sort_order - b.sort_order
+  })
+})
 
 const fetchDishes = async () => {
   loading.value = true
@@ -45,7 +55,7 @@ const openForm = (dish?: Dish) => {
     editingDish.value = null
     form.value = {
       name: '',
-      category: 'Entradas',
+      category: 'entradas',
       description: '',
       price: null,
       sort_order: 0
@@ -178,7 +188,7 @@ onMounted(fetchDishes)
           </tr>
         </thead>
         <tbody>
-          <tr v-for="dish in dishes" :key="dish.id">
+          <tr v-for="dish in sortedDishes" :key="dish.id">
             <td class="name-cell">{{ dish.name }}</td>
             <td>{{ dish.category }}</td>
             <td class="desc-cell">{{ dish.description || '-' }}</td>

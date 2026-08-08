@@ -3,6 +3,16 @@ import type { Dish } from '~/types'
 export const useDishes = () => {
   const supabase = useSupabase()
 
+  const categoryOrder = ['entradas', 'hamburguesas', 'desgranados', 'picadas']
+
+  const categories = [
+    { key: 'todos', label: 'Todas' },
+    { key: 'entradas', label: 'Entradas' },
+    { key: 'hamburguesas', label: 'Hamburguesas' },
+    { key: 'desgranados', label: 'Desgranados' },
+    { key: 'picadas', label: 'Picadas' }
+  ]
+
   const fetchDishes = async () => {
     const { data, error } = await supabase
       .from('dishes')
@@ -14,21 +24,8 @@ export const useDishes = () => {
       return []
     }
 
-    const grouped: Record<string, Dish[]> = {}
-    data.forEach((dish) => {
-      if (!grouped[dish.category]) {
-        grouped[dish.category] = []
-      }
-      grouped[dish.category].push(dish)
-    })
-
-    return Object.entries(grouped).map(([group, items]) => ({
-      group,
-      items
-    }))
+    return data as Dish[]
   }
 
-  return {
-    fetchDishes
-  }
+  return { fetchDishes, categories, categoryOrder }
 }
