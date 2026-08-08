@@ -1,64 +1,52 @@
 <script setup lang="ts">
-import type { Drink } from '~/types'
+import type { Dish } from '~/types'
 
 definePageMeta({
   layout: 'admin'
 })
 
 const supabase = useSupabase()
-const drinks = ref<Drink[]>([])
+const dishes = ref<Dish[]>([])
 const loading = ref(false)
 const showForm = ref(false)
-const editingDrink = ref<Drink | null>(null)
+const editingDish = ref<Dish | null>(null)
 
 const form = ref({
   name: '',
-  category: 'margaritas',
-  category_label: 'Margarita',
+  category: 'Entradas',
   description: '',
   price: null as number | null,
-  image_url: '',
-  available: true,
   sort_order: 0
 })
 
-const categories = [
-  { value: 'margaritas', label: 'Margaritas', categoryLabel: 'Margarita' },
-  { value: 'daiquiris', label: 'Daiquiris', categoryLabel: 'Daiquiri' },
-  { value: 'clasicos', label: 'Clásicos', categoryLabel: 'Clásico' },
-  { value: 'sodas', label: 'Sodas', categoryLabel: 'Soda' },
-  { value: 'cervezas', label: 'Cervezas', categoryLabel: 'Cerveza' }
-]
+const categories = ['Entradas', 'Fuertes', 'Postres']
 
-const fetchDrinks = async () => {
+const fetchDishes = async () => {
   loading.value = true
   const { data, error } = await supabase
-    .from('drinks')
+    .from('dishes')
     .select('*')
     .order('sort_order', { ascending: true })
 
   if (error) {
     console.error('Error:', error)
   } else {
-    drinks.value = data || []
+    dishes.value = data || []
   }
   loading.value = false
 }
 
-const openForm = (drink?: Drink) => {
-  if (drink) {
-    editingDrink.value = drink
-    form.value = { ...drink }
+const openForm = (dish?: Dish) => {
+  if (dish) {
+    editingDish.value = dish
+    form.value = { ...dish }
   } else {
-    editingDrink.value = null
+    editingDish.value = null
     form.value = {
       name: '',
-      category: 'margaritas',
-      category_label: 'Margarita',
+      category: 'Entradas',
       description: '',
       price: null,
-      image_url: '',
-      available: true,
       sort_order: 0
     }
   }
@@ -67,24 +55,17 @@ const openForm = (drink?: Drink) => {
 
 const closeForm = () => {
   showForm.value = false
-  editingDrink.value = null
+  editingDish.value = null
 }
 
-const updateCategoryLabel = () => {
-  const selected = categories.find(c => c.value === form.value.category)
-  if (selected) {
-    form.value.category_label = selected.categoryLabel
-  }
-}
-
-const saveDrink = async () => {
+const saveDish = async () => {
   if (!form.value.name) return
 
-  if (editingDrink.value) {
+  if (editingDish.value) {
     const { error } = await supabase
-      .from('drinks')
+      .from('dishes')
       .update(form.value)
-      .eq('id', editingDrink.value.id)
+      .eq('id', editingDish.value.id)
 
     if (error) {
       console.error('Error updating:', error)
@@ -92,7 +73,7 @@ const saveDrink = async () => {
     }
   } else {
     const { error } = await supabase
-      .from('drinks')
+      .from('dishes')
       .insert([form.value])
 
     if (error) {
@@ -102,14 +83,14 @@ const saveDrink = async () => {
   }
 
   closeForm()
-  await fetchDrinks()
+  await fetchDishes()
 }
 
-const deleteDrink = async (id: string) => {
-  if (!confirm('¿Eliminar esta bebida?')) return
+const deleteDish = async (id: string) => {
+  if (!confirm('¿Eliminar este plato?')) return
 
   const { error } = await supabase
-    .from('drinks')
+    .from('dishes')
     .delete()
     .eq('id', id)
 
@@ -118,7 +99,7 @@ const deleteDrink = async (id: string) => {
     return
   }
 
-  await fetchDrinks()
+  await fetchDishes()
 }
 
 const formatPrice = (price: number | null) => {
@@ -126,24 +107,24 @@ const formatPrice = (price: number | null) => {
   return `$${price.toLocaleString('es-CO')}`
 }
 
-onMounted(fetchDrinks)
+onMounted(fetchDishes)
 </script>
 
 <template>
   <div class="admin-page">
     <div class="page-header">
       <div>
-        <h1>Bebidas</h1>
-        <p>{{ drinks.length }} bebidas registradas</p>
+        <h1>Comida</h1>
+        <p>{{ dishes.length }} platos registrados</p>
       </div>
-      <button @click="openForm()" class="btn-primary">+ Agregar bebida</button>
+      <button @click="openForm()" class="btn-primary">+ Agregar plato</button>
     </div>
 
     <div v-if="showForm" class="modal-overlay" @click.self="closeForm">
       <div class="modal">
-        <h2>{{ editingDrink ? 'Editar bebida' : 'Nueva bebida' }}</h2>
+        <h2>{{ editingDish ? 'Editar plato' : 'Nuevo plato' }}</h2>
 
-        <form @submit.prevent="saveDrink">
+        <form @submit.prevent="saveDish">
           <div class="form-grid">
             <div class="form-group">
               <label>Nombre</label>
@@ -152,9 +133,9 @@ onMounted(fetchDrinks)
 
             <div class="form-group">
               <label>Categoría</label>
-              <select v-model="form.category" @change="updateCategoryLabel" required>
-                <option v-for="cat in categories" :key="cat.value" :value="cat.value">
-                  {{ cat.label }}
+              <select v-model="form.category" required>
+                <option v-for="cat in categories" :key="cat" :value="cat">
+                  {{ cat }}
                 </option>
               </select>
             </div>
@@ -173,21 +154,6 @@ onMounted(fetchDrinks)
               <label>Orden</label>
               <input v-model.number="form.sort_order" type="number" min="0" />
             </div>
-
-            <div class="form-group full-width">
-              <AdminImageUpload
-                v-model="form.image_url"
-                bucket="drinks"
-                label="Imagen de la bebida"
-              />
-            </div>
-
-            <div class="form-group">
-              <label>
-                <input v-model="form.available" type="checkbox" />
-                Disponible
-              </label>
-            </div>
           </div>
 
           <div class="form-actions">
@@ -202,35 +168,24 @@ onMounted(fetchDrinks)
       <table>
         <thead>
           <tr>
-            <th>Imagen</th>
             <th>Nombre</th>
             <th>Categoría</th>
+            <th>Descripción</th>
             <th>Precio</th>
-            <th>Disponible</th>
             <th>Orden</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="drink in drinks" :key="drink.id">
-            <td>
-              <div class="image-cell">
-                <img v-if="drink.image_url" :src="drink.image_url" :alt="drink.name" />
-                <div v-else class="no-image">Sin imagen</div>
-              </div>
-            </td>
-            <td class="name-cell">{{ drink.name }}</td>
-            <td>{{ drink.category_label }}</td>
-            <td>{{ formatPrice(drink.price) }}</td>
-            <td>
-              <span :class="['status', drink.available ? 'available' : 'unavailable']">
-                {{ drink.available ? 'Sí' : 'No' }}
-              </span>
-            </td>
-            <td>{{ drink.sort_order }}</td>
+          <tr v-for="dish in dishes" :key="dish.id">
+            <td class="name-cell">{{ dish.name }}</td>
+            <td>{{ dish.category }}</td>
+            <td class="desc-cell">{{ dish.description || '-' }}</td>
+            <td>{{ formatPrice(dish.price) }}</td>
+            <td>{{ dish.sort_order }}</td>
             <td class="actions-cell">
-              <button @click="openForm(drink)" class="btn-icon">✏️</button>
-              <button @click="deleteDrink(drink.id)" class="btn-icon danger">🗑️</button>
+              <button @click="openForm(dish)" class="btn-icon">✏️</button>
+              <button @click="deleteDish(dish.id)" class="btn-icon danger">🗑️</button>
             </td>
           </tr>
         </tbody>
@@ -356,11 +311,6 @@ onMounted(fetchDrinks)
   border-color: #123b32;
 }
 
-.form-group input[type="checkbox"] {
-  width: auto;
-  margin-right: 8px;
-}
-
 .form-actions {
   display: flex;
   gap: 12px;
@@ -398,49 +348,14 @@ td {
   border-bottom: 1px solid #f0f0f0;
 }
 
-.image-cell {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #f0f0f0;
-}
-
-.image-cell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.no-image {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: #999;
-}
-
 .name-cell {
   font-weight: 500;
 }
 
-.status {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.status.available {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status.unavailable {
-  background: #fee2e2;
-  color: #991b1b;
+.desc-cell {
+  color: #666;
+  font-size: 13px;
+  max-width: 300px;
 }
 
 .actions-cell {

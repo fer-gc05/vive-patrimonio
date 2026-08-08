@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const images = [
-  { src: '/img/hero.jpg', alt: 'Río Sinú' },
-  { src: '/img/atardecer.jpg', alt: 'Atardecer' },
-  { src: '/img/margarita-tradicional.jpg', alt: 'Margarita' },
-  { src: '/img/soda-corozo.jpg', alt: 'Soda de corozo' }
-]
+const { fetchGallery } = useGallery()
+const images = ref([])
+
+onMounted(async () => {
+  images.value = await fetchGallery()
+})
 </script>
 
 <template>
@@ -16,8 +16,8 @@ const images = [
     <div class="gallery-grid">
       <img
         v-for="(image, index) in images"
-        :key="index"
-        :src="image.src"
+        :key="image.id"
+        :src="image.image_url"
         :alt="image.alt"
         loading="lazy"
       />

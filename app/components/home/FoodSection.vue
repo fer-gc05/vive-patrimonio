@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { foodGroups } = useFood()
+const { fetchDishes } = useDishes()
+const foodGroups = ref([])
+
+onMounted(async () => {
+  foodGroups.value = await fetchDishes()
+})
 </script>
 
 <template>

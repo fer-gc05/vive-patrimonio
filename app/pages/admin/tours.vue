@@ -1,63 +1,57 @@
 <script setup lang="ts">
-import type { Drink } from '~/types'
+import type { Tour } from '~/types'
 
 definePageMeta({
   layout: 'admin'
 })
 
 const supabase = useSupabase()
-const drinks = ref<Drink[]>([])
+const tours = ref<Tour[]>([])
 const loading = ref(false)
 const showForm = ref(false)
-const editingDrink = ref<Drink | null>(null)
+const editingTour = ref<Tour | null>(null)
 
 const form = ref({
   name: '',
-  category: 'margaritas',
-  category_label: 'Margarita',
+  duration: '',
+  type: '',
   description: '',
   price: null as number | null,
   image_url: '',
+  whatsapp_message: '',
   available: true,
   sort_order: 0
 })
 
-const categories = [
-  { value: 'margaritas', label: 'Margaritas', categoryLabel: 'Margarita' },
-  { value: 'daiquiris', label: 'Daiquiris', categoryLabel: 'Daiquiri' },
-  { value: 'clasicos', label: 'Clásicos', categoryLabel: 'Clásico' },
-  { value: 'sodas', label: 'Sodas', categoryLabel: 'Soda' },
-  { value: 'cervezas', label: 'Cervezas', categoryLabel: 'Cerveza' }
-]
-
-const fetchDrinks = async () => {
+const fetchTours = async () => {
   loading.value = true
   const { data, error } = await supabase
-    .from('drinks')
+    .from('tours')
     .select('*')
     .order('sort_order', { ascending: true })
 
   if (error) {
     console.error('Error:', error)
   } else {
-    drinks.value = data || []
+    tours.value = data || []
   }
   loading.value = false
 }
 
-const openForm = (drink?: Drink) => {
-  if (drink) {
-    editingDrink.value = drink
-    form.value = { ...drink }
+const openForm = (tour?: Tour) => {
+  if (tour) {
+    editingTour.value = tour
+    form.value = { ...tour }
   } else {
-    editingDrink.value = null
+    editingTour.value = null
     form.value = {
       name: '',
-      category: 'margaritas',
-      category_label: 'Margarita',
+      duration: '',
+      type: '',
       description: '',
       price: null,
       image_url: '',
+      whatsapp_message: '',
       available: true,
       sort_order: 0
     }
@@ -67,24 +61,17 @@ const openForm = (drink?: Drink) => {
 
 const closeForm = () => {
   showForm.value = false
-  editingDrink.value = null
+  editingTour.value = null
 }
 
-const updateCategoryLabel = () => {
-  const selected = categories.find(c => c.value === form.value.category)
-  if (selected) {
-    form.value.category_label = selected.categoryLabel
-  }
-}
-
-const saveDrink = async () => {
+const saveTour = async () => {
   if (!form.value.name) return
 
-  if (editingDrink.value) {
+  if (editingTour.value) {
     const { error } = await supabase
-      .from('drinks')
+      .from('tours')
       .update(form.value)
-      .eq('id', editingDrink.value.id)
+      .eq('id', editingTour.value.id)
 
     if (error) {
       console.error('Error updating:', error)
@@ -92,7 +79,7 @@ const saveDrink = async () => {
     }
   } else {
     const { error } = await supabase
-      .from('drinks')
+      .from('tours')
       .insert([form.value])
 
     if (error) {
@@ -102,14 +89,14 @@ const saveDrink = async () => {
   }
 
   closeForm()
-  await fetchDrinks()
+  await fetchTours()
 }
 
-const deleteDrink = async (id: string) => {
-  if (!confirm('¿Eliminar esta bebida?')) return
+const deleteTour = async (id: string) => {
+  if (!confirm('¿Eliminar este tour?')) return
 
   const { error } = await supabase
-    .from('drinks')
+    .from('tours')
     .delete()
     .eq('id', id)
 
@@ -118,7 +105,7 @@ const deleteDrink = async (id: string) => {
     return
   }
 
-  await fetchDrinks()
+  await fetchTours()
 }
 
 const formatPrice = (price: number | null) => {
@@ -126,24 +113,24 @@ const formatPrice = (price: number | null) => {
   return `$${price.toLocaleString('es-CO')}`
 }
 
-onMounted(fetchDrinks)
+onMounted(fetchTours)
 </script>
 
 <template>
   <div class="admin-page">
     <div class="page-header">
       <div>
-        <h1>Bebidas</h1>
-        <p>{{ drinks.length }} bebidas registradas</p>
+        <h1>Tours</h1>
+        <p>{{ tours.length }} tours registrados</p>
       </div>
-      <button @click="openForm()" class="btn-primary">+ Agregar bebida</button>
+      <button @click="openForm()" class="btn-primary">+ Agregar tour</button>
     </div>
 
     <div v-if="showForm" class="modal-overlay" @click.self="closeForm">
       <div class="modal">
-        <h2>{{ editingDrink ? 'Editar bebida' : 'Nueva bebida' }}</h2>
+        <h2>{{ editingTour ? 'Editar tour' : 'Nuevo tour' }}</h2>
 
-        <form @submit.prevent="saveDrink">
+        <form @submit.prevent="saveTour">
           <div class="form-grid">
             <div class="form-group">
               <label>Nombre</label>
@@ -151,17 +138,13 @@ onMounted(fetchDrinks)
             </div>
 
             <div class="form-group">
-              <label>Categoría</label>
-              <select v-model="form.category" @change="updateCategoryLabel" required>
-                <option v-for="cat in categories" :key="cat.value" :value="cat.value">
-                  {{ cat.label }}
-                </option>
-              </select>
+              <label>Duración</label>
+              <input v-model="form.duration" type="text" placeholder="45 MIN" required />
             </div>
 
-            <div class="form-group full-width">
-              <label>Descripción</label>
-              <textarea v-model="form.description" rows="3"></textarea>
+            <div class="form-group">
+              <label>Tipo</label>
+              <input v-model="form.type" type="text" placeholder="GRUPAL" required />
             </div>
 
             <div class="form-group">
@@ -169,17 +152,27 @@ onMounted(fetchDrinks)
               <input v-model.number="form.price" type="number" min="0" />
             </div>
 
-            <div class="form-group">
-              <label>Orden</label>
-              <input v-model.number="form.sort_order" type="number" min="0" />
+            <div class="form-group full-width">
+              <label>Descripción</label>
+              <textarea v-model="form.description" rows="3"></textarea>
             </div>
 
             <div class="form-group full-width">
               <AdminImageUpload
                 v-model="form.image_url"
-                bucket="drinks"
-                label="Imagen de la bebida"
+                bucket="tours"
+                label="Imagen del tour"
               />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Mensaje de WhatsApp</label>
+              <input v-model="form.whatsapp_message" type="text" placeholder="Hola, quiero reservar..." />
+            </div>
+
+            <div class="form-group">
+              <label>Orden</label>
+              <input v-model.number="form.sort_order" type="number" min="0" />
             </div>
 
             <div class="form-group">
@@ -204,33 +197,33 @@ onMounted(fetchDrinks)
           <tr>
             <th>Imagen</th>
             <th>Nombre</th>
-            <th>Categoría</th>
+            <th>Duración</th>
+            <th>Tipo</th>
             <th>Precio</th>
             <th>Disponible</th>
-            <th>Orden</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="drink in drinks" :key="drink.id">
+          <tr v-for="tour in tours" :key="tour.id">
             <td>
               <div class="image-cell">
-                <img v-if="drink.image_url" :src="drink.image_url" :alt="drink.name" />
+                <img v-if="tour.image_url" :src="tour.image_url" :alt="tour.name" />
                 <div v-else class="no-image">Sin imagen</div>
               </div>
             </td>
-            <td class="name-cell">{{ drink.name }}</td>
-            <td>{{ drink.category_label }}</td>
-            <td>{{ formatPrice(drink.price) }}</td>
+            <td class="name-cell">{{ tour.name }}</td>
+            <td>{{ tour.duration }}</td>
+            <td>{{ tour.type }}</td>
+            <td>{{ formatPrice(tour.price) }}</td>
             <td>
-              <span :class="['status', drink.available ? 'available' : 'unavailable']">
-                {{ drink.available ? 'Sí' : 'No' }}
+              <span :class="['status', tour.available ? 'available' : 'unavailable']">
+                {{ tour.available ? 'Sí' : 'No' }}
               </span>
             </td>
-            <td>{{ drink.sort_order }}</td>
             <td class="actions-cell">
-              <button @click="openForm(drink)" class="btn-icon">✏️</button>
-              <button @click="deleteDrink(drink.id)" class="btn-icon danger">🗑️</button>
+              <button @click="openForm(tour)" class="btn-icon">✏️</button>
+              <button @click="deleteTour(tour.id)" class="btn-icon danger">🗑️</button>
             </td>
           </tr>
         </tbody>
@@ -340,7 +333,6 @@ onMounted(fetchDrinks)
 }
 
 .form-group input,
-.form-group select,
 .form-group textarea {
   padding: 10px 12px;
   border: 1px solid #ddd;
@@ -350,7 +342,6 @@ onMounted(fetchDrinks)
 }
 
 .form-group input:focus,
-.form-group select:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: #123b32;

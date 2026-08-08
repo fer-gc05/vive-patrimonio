@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { tours, getWhatsappLink } = useTours()
+const { fetchTours, getWhatsappLink } = useTours()
+const tours = ref([])
+
+onMounted(async () => {
+  tours.value = await fetchTours()
+})
 </script>
 
 <template>

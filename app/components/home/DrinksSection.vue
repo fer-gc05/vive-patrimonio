@@ -1,15 +1,20 @@
 <script setup lang="ts">
-const { drinks, categories } = useDrinks()
+const { fetchDrinks, categories } = useDrinks()
+const drinks = ref([])
 const activeCategory = ref('todos')
 
 const filteredDrinks = computed(() => {
-  if (activeCategory.value === 'todos') return drinks
-  return drinks.filter((drink) => drink.category === activeCategory.value)
+  if (activeCategory.value === 'todos') return drinks.value
+  return drinks.value.filter((drink) => drink.category === activeCategory.value)
 })
 
 const selectCategory = (key: string) => {
   activeCategory.value = key
 }
+
+onMounted(async () => {
+  drinks.value = await fetchDrinks()
+})
 </script>
 
 <template>

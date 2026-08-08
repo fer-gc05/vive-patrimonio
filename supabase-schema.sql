@@ -1,0 +1,109 @@
+-- Script SQL para crear las tablas en Supabase
+-- Ejecutar este script en el SQL Editor de Supabase
+
+-- Tabla de bebidas
+create table drinks (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  name text not null,
+  category text not null,
+  category_label text not null,
+  description text,
+  price integer,
+  image_url text,
+  available boolean default true,
+  sort_order integer default 0
+);
+
+-- Tabla de platos
+create table dishes (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  name text not null,
+  category text not null,
+  description text,
+  price integer,
+  sort_order integer default 0
+);
+
+-- Tabla de tours
+create table tours (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  name text not null,
+  duration text not null,
+  type text not null,
+  description text,
+  price integer,
+  image_url text,
+  whatsapp_message text,
+  available boolean default true,
+  sort_order integer default 0
+);
+
+-- Tabla de galería
+create table gallery (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  image_url text not null,
+  alt text,
+  sort_order integer default 0
+);
+
+-- Tabla de configuración
+create table settings (
+  id integer primary key default 1,
+  whatsapp_number text,
+  instagram_url text,
+  hero_title text,
+  hero_subtitle text
+);
+
+-- Insertar configuración inicial
+insert into settings (id, whatsapp_number, instagram_url, hero_title, hero_subtitle)
+values (
+  1,
+  '573001234567',
+  'https://www.instagram.com/vivepatrimoni0/',
+  'Vive el río. Vive Patrimonio.',
+  'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
+);
+
+-- Habilitar RLS (Row Level Security)
+alter table drinks enable row level security;
+alter table dishes enable row level security;
+alter table tours enable row level security;
+alter table gallery enable row level security;
+alter table settings enable row level security;
+
+-- Políticas de lectura pública
+create policy "Allow public read access on drinks" on drinks
+  for select to anon using (true);
+
+create policy "Allow public read access on dishes" on dishes
+  for select to anon using (true);
+
+create policy "Allow public read access on tours" on tours
+  for select to anon using (true);
+
+create policy "Allow public read access on gallery" on gallery
+  for select to anon using (true);
+
+create policy "Allow public read access on settings" on settings
+  for select to anon using (true);
+
+-- Políticas de escritura para usuarios autenticados
+create policy "Allow authenticated write access on drinks" on drinks
+  for all to authenticated using (true) with check (true);
+
+create policy "Allow authenticated write access on dishes" on dishes
+  for all to authenticated using (true) with check (true);
+
+create policy "Allow authenticated write access on tours" on tours
+  for all to authenticated using (true) with check (true);
+
+create policy "Allow authenticated write access on gallery" on gallery
+  for all to authenticated using (true) with check (true);
+
+create policy "Allow authenticated write access on settings" on settings
+  for all to authenticated using (true) with check (true);
