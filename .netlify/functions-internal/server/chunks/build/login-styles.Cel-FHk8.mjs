@@ -1,0 +1,9 @@
+//#region app/pages/admin/login.vue?vue&type=style&index=0&scoped=515113c0&inline&used&lang.scss
+var login_vue_vue_type_style_index_0_scoped_515113c0_inline_used_lang_default = "[data-v-515113c0]:root{--green:#123b32;--green-dark:#09251f;--gold:#c99a4a;--cream:#f5efe3;--white:#fff;--black:#111;--gray:#6e6e6e;--border:#123b3226}.login-page[data-v-515113c0]{background:linear-gradient(135deg,#123b32,#09251f);justify-content:center;align-items:center;min-height:100vh;display:flex}.login-card[data-v-515113c0]{background:#fff;border-radius:12px;width:100%;max-width:420px;padding:48px;box-shadow:0 20px 60px #0000004d}.login-card h1[data-v-515113c0]{color:#123b32;margin-bottom:8px;font-size:28px}.login-card>p[data-v-515113c0]{color:#666;margin-bottom:32px;font-size:14px}.form-group[data-v-515113c0]{margin-bottom:20px}.form-group label[data-v-515113c0]{color:#333;margin-bottom:8px;font-size:14px;font-weight:500;display:block}.form-group input[data-v-515113c0]{border:1px solid #ddd;border-radius:6px;width:100%;padding:12px 16px;font-size:14px;transition:border-color .2s}.form-group input[data-v-515113c0]:focus{border-color:#123b32;outline:none}.error-message[data-v-515113c0]{color:#c33;background:#fee;border-radius:6px;margin-bottom:20px;padding:12px;font-size:13px}.login-btn[data-v-515113c0]{color:#fff;cursor:pointer;background:#123b32;border:none;border-radius:6px;width:100%;padding:14px;font-size:15px;font-weight:600;transition:background .2s}.login-btn[data-v-515113c0]:hover:not(:disabled){background:#09251f}.login-btn[data-v-515113c0]:disabled{opacity:.6;cursor:not-allowed}";
+
+const loginStyles_CelFHk8 = [
+  login_vue_vue_type_style_index_0_scoped_515113c0_inline_used_lang_default
+];
+
+export { loginStyles_CelFHk8 as default };
+//# sourceMappingURL=login-styles.Cel-FHk8.mjs.map

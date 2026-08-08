@@ -1,0 +1,5 @@
+//#region app/components/home/PresentationSection.vue?vue&type=style&index=0&scoped=9d0cd732&inline&used&lang.scss
+var PresentationSection_vue_vue_type_style_index_0_scoped_9d0cd732_inline_used_lang_default = "[data-v-9d0cd732]:root{--green:#123b32;--green-dark:#09251f;--gold:#c99a4a;--cream:#f5efe3;--white:#fff;--black:#111;--gray:#6e6e6e;--border:#123b3226}.presentation[data-v-9d0cd732]{text-align:center;padding:110px 20px 90px}.presentation h2[data-v-9d0cd732]{margin:20px 0;font-family:Cormorant Garamond,serif;font-size:clamp(45px,6vw,75px);font-weight:500;line-height:.95}.presentation h2 span[data-v-9d0cd732]{color:var(--gold);font-style:italic}.presentation p[data-v-9d0cd732]{max-width:600px;color:var(--gray);margin:auto;line-height:1.8}@media (width<=700px){.presentation[data-v-9d0cd732]{padding:72px 22px 58px}.presentation h2[data-v-9d0cd732]{margin:16px 0;font-size:49px}.presentation p[data-v-9d0cd732]{font-size:13px;line-height:1.7}}";
+
+export { PresentationSection_vue_vue_type_style_index_0_scoped_9d0cd732_inline_used_lang_default as P };
+//# sourceMappingURL=index-styles-5.mjs-BzEJPebO.mjs.map
