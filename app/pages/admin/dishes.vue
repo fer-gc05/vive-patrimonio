@@ -2,7 +2,8 @@
 import type { Dish } from '~/types'
 
 definePageMeta({
-  layout: 'admin'
+  layout: 'admin',
+  middleware: ['auth']
 })
 
 const supabase = useSupabase()

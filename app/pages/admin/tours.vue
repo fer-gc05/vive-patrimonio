@@ -2,7 +2,8 @@
 import type { Tour } from '~/types'
 
 definePageMeta({
-  layout: 'admin'
+  layout: 'admin',
+  middleware: ['auth']
 })
 
 const supabase = useSupabase()

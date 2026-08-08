@@ -2,6 +2,7 @@
 const supabase = useSupabase()
 const router = useRouter()
 const user = ref<any>(null)
+const loading = ref(true)
 
 onMounted(async () => {
   const { data: { user } } = await supabase.auth.getUser()
@@ -10,6 +11,7 @@ onMounted(async () => {
   } else {
     user.value = user
   }
+  loading.value = false
 })
 
 const logout = async () => {
@@ -19,7 +21,10 @@ const logout = async () => {
 </script>
 
 <template>
-  <div class="admin-layout">
+  <div v-if="loading" class="loading-screen">
+    <div class="spinner"></div>
+  </div>
+  <div v-else class="admin-layout">
     <aside class="sidebar">
       <div class="sidebar-header">
         <h2>Admin Panel</h2>
@@ -45,6 +50,29 @@ const logout = async () => {
 </template>
 
 <style scoped lang="scss">
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #123b32;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .admin-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
