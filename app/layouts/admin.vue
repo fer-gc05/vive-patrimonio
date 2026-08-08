@@ -4,6 +4,7 @@ const router = useRouter()
 const user = ref<any>(null)
 const loading = ref(true)
 const sidebarOpen = ref(false)
+const sidebarCollapsed = ref(false)
 
 onMounted(async () => {
   const { data: { user } } = await supabase.auth.getUser()
@@ -23,6 +24,10 @@ const logout = async () => {
 const closeSidebar = () => {
   sidebarOpen.value = false
 }
+
+const toggleSidebar = () => {
+  sidebarCollapsed.value = !sidebarCollapsed.value
+}
 </script>
 
 <template>
@@ -31,7 +36,7 @@ const closeSidebar = () => {
   </div>
   <div v-else class="admin-layout">
     <div v-if="sidebarOpen" class="sidebar-overlay" @click="closeSidebar"></div>
-    <aside class="sidebar" :class="{ open: sidebarOpen }">
+    <aside class="sidebar" :class="{ open: sidebarOpen, collapsed: sidebarCollapsed }">
       <div class="sidebar-header">
         <div class="sidebar-header-top">
           <h2>Admin Panel</h2>
@@ -52,12 +57,15 @@ const closeSidebar = () => {
         <button @click="logout" class="logout-btn">Cerrar sesión</button>
       </div>
     </aside>
-    <main class="admin-main">
+    <main class="admin-main" :class="{ expanded: sidebarCollapsed }">
       <div class="topbar">
         <button class="hamburger" @click="sidebarOpen = true" aria-label="Abrir menú">
           <span></span>
           <span></span>
           <span></span>
+        </button>
+        <button class="toggle-sidebar" @click="toggleSidebar" :aria-label="sidebarCollapsed ? 'Mostrar menú' : 'Ocultar menú'">
+          ☰
         </button>
         <span class="topbar-title">Admin</span>
       </div>
@@ -107,6 +115,17 @@ const closeSidebar = () => {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-260px);
 }
 
 .sidebar-header {
@@ -191,6 +210,12 @@ const closeSidebar = () => {
 .admin-main {
   padding: 40px;
   overflow-y: auto;
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+}
+
+.admin-main.expanded {
+  margin-left: 0;
 }
 
 .topbar {
@@ -199,6 +224,21 @@ const closeSidebar = () => {
 
 .hamburger {
   display: none;
+}
+
+.toggle-sidebar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #1a1a1a;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.toggle-sidebar:hover {
+  background: #e5e5e5;
 }
 
 @media (max-width: 768px) {
@@ -215,28 +255,35 @@ const closeSidebar = () => {
   }
 
   .sidebar {
-    position: fixed;
     left: -280px;
-    top: 0;
-    height: 100vh;
     width: 260px;
     z-index: 100;
     transition: left 0.3s ease;
     padding-top: 24px;
+    transform: none;
   }
 
   .sidebar.open {
     left: 0;
   }
 
+  .sidebar.collapsed {
+    transform: none;
+    left: -280px;
+  }
+
   .close-sidebar {
     display: block;
+  }
+
+  .toggle-sidebar {
+    display: none;
   }
 
   .topbar {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 24px;
   }
 
@@ -266,6 +313,11 @@ const closeSidebar = () => {
 
   .admin-main {
     padding: 20px;
+    margin-left: 0;
+  }
+
+  .admin-main.expanded {
+    margin-left: 0;
   }
 }
 </style>
