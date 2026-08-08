@@ -6,9 +6,20 @@ const drinks = ref<Drink[]>([])
 const activeCategory = ref('todos')
 const selectedDrink = ref<Drink | null>(null)
 
+const categoryOrder = ['margaritas', 'daiquiris', 'clasicos', 'sodas', 'cervezas']
+
 const filteredDrinks = computed(() => {
-  if (activeCategory.value === 'todos') return drinks.value
-  return drinks.value.filter((drink) => drink.category === activeCategory.value)
+  if (activeCategory.value === 'todos') {
+    return [...drinks.value].sort((a, b) => {
+      const orderA = categoryOrder.indexOf(a.category)
+      const orderB = categoryOrder.indexOf(b.category)
+      if (orderA !== orderB) return orderA - orderB
+      return a.sort_order - b.sort_order
+    })
+  }
+  return drinks.value
+    .filter((drink) => drink.category === activeCategory.value)
+    .sort((a, b) => a.sort_order - b.sort_order)
 })
 
 const selectCategory = (key: string) => {
