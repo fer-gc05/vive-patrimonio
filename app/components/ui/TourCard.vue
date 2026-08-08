@@ -31,11 +31,11 @@ const formatPrice = (price: number | null) => {
         />
       </div>
       <div class="tour-content">
-        <span class="tour-duration">{{ tour.duration }} · {{ tour.type }}</span>
         <h3>{{ tour.name }}</h3>
+        <span class="tour-duration">{{ tour.duration }} · {{ tour.type }}</span>
         <p>{{ tour.description }}</p>
         <div class="tour-footer">
-          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }}</span>
+          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small>por persona</small></span>
           <a :href="whatsappLink" class="tour-button" target="_blank" rel="noopener" @click.stop>
             Reservar
           </a>
@@ -90,18 +90,19 @@ const formatPrice = (price: number | null) => {
   flex: 1;
 }
 
+.tour-content h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 27px;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
 .tour-duration {
   font-size: 10px;
   letter-spacing: 2px;
   font-weight: 700;
   color: var(--gold);
-}
-
-.tour-content h3 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 27px;
-  color: var(--green);
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
 .tour-content p {
@@ -125,6 +126,12 @@ const formatPrice = (price: number | null) => {
   font-size: 13px;
   font-weight: 700;
   color: var(--green);
+
+  small {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--gray);
+  }
 }
 
 .tour-button {

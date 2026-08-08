@@ -62,9 +62,9 @@ useHead({
       </div>
 
       <div class="tour-info">
-        <span class="tour-meta">{{ tour.duration }} · {{ tour.type }}</span>
         <h1>{{ tour.name }}</h1>
-        <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }}</span>
+        <span class="tour-meta">{{ tour.duration }} · {{ tour.type }}</span>
+        <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small>por persona</small></span>
         <p class="tour-description">{{ tour.description }}</p>
 
         <div class="tour-actions">
@@ -178,20 +178,22 @@ useHead({
   padding: 48px 6% 80px;
 }
 
+.tour-info h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(36px, 5vw, 52px);
+  color: var(--green);
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
 .tour-meta {
+  display: block;
   font-size: 11px;
   letter-spacing: 2px;
   font-weight: 700;
   color: var(--gold);
   text-transform: uppercase;
-}
-
-.tour-info h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(36px, 5vw, 52px);
-  color: var(--green);
-  margin: 12px 0 16px;
-  line-height: 1.1;
+  margin-bottom: 16px;
 }
 
 .tour-price {
@@ -200,6 +202,12 @@ useHead({
   font-weight: 700;
   color: var(--gold);
   margin-bottom: 24px;
+
+  small {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--gray);
+  }
 }
 
 .tour-description {
