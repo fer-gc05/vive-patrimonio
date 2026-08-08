@@ -112,3 +112,52 @@ create policy "Allow authenticated write access on gallery" on gallery
 
 create policy "Allow authenticated write access on settings" on settings
   for all to authenticated using (true) with check (true);
+
+-- ============================================================
+-- Storage Buckets y Políticas
+-- ============================================================
+
+-- Crear buckets (si no existen)
+insert into storage.buckets (id, name, public) values ('drinks', 'drinks', true) on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('tours', 'tours', true) on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('gallery', 'gallery', true) on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('site', 'site', true) on conflict (id) do nothing;
+
+-- Lectura pública para todos los buckets
+create policy "Public read access on drinks bucket" on storage.objects
+  for select to anon using (bucket_id = 'drinks');
+
+create policy "Public read access on tours bucket" on storage.objects
+  for select to anon using (bucket_id = 'tours');
+
+create policy "Public read access on gallery bucket" on storage.objects
+  for select to anon using (bucket_id = 'gallery');
+
+create policy "Public read access on site bucket" on storage.objects
+  for select to anon using (bucket_id = 'site');
+
+-- Escritura autenticada para todos los buckets
+create policy "Authenticated upload on drinks bucket" on storage.objects
+  for insert to authenticated with check (bucket_id = 'drinks');
+
+create policy "Authenticated upload on tours bucket" on storage.objects
+  for insert to authenticated with check (bucket_id = 'tours');
+
+create policy "Authenticated upload on gallery bucket" on storage.objects
+  for insert to authenticated with check (bucket_id = 'gallery');
+
+create policy "Authenticated upload on site bucket" on storage.objects
+  for insert to authenticated with check (bucket_id = 'site');
+
+-- Eliminación autenticada para todos los buckets
+create policy "Authenticated delete on drinks bucket" on storage.objects
+  for delete to authenticated using (bucket_id = 'drinks');
+
+create policy "Authenticated delete on tours bucket" on storage.objects
+  for delete to authenticated using (bucket_id = 'tours');
+
+create policy "Authenticated delete on gallery bucket" on storage.objects
+  for delete to authenticated using (bucket_id = 'gallery');
+
+create policy "Authenticated delete on site bucket" on storage.objects
+  for delete to authenticated using (bucket_id = 'site');

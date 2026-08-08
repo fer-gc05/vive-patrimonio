@@ -63,8 +63,8 @@ useHead({
 
       <div class="tour-info">
         <h1>{{ tour.name }}</h1>
-        <span class="tour-meta">{{ tour.duration }} MIN<span v-if="tour.type"> · {{ tour.type }}</span></span>
-        <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small>por persona</small></span>
+        <span class="tour-meta">{{ tour.duration }} MIN</span>
+        <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small v-if="tour.type">· {{ tour.type }}</small></span>
         <p class="tour-description">{{ tour.description }}</p>
 
         <div class="tour-actions">

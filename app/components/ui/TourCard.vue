@@ -32,10 +32,10 @@ const formatPrice = (price: number | null) => {
       </div>
       <div class="tour-content">
         <h3>{{ tour.name }}</h3>
-        <span class="tour-duration">{{ tour.duration }} MIN<span v-if="tour.type"> · {{ tour.type }}</span></span>
+        <span class="tour-duration">{{ tour.duration }} MIN</span>
         <p>{{ tour.description }}</p>
         <div class="tour-footer">
-          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small>por persona</small></span>
+          <span v-if="formatPrice(tour.price)" class="tour-price">{{ formatPrice(tour.price) }} <small v-if="tour.type">· {{ tour.type }}</small></span>
           <a :href="whatsappLink" class="tour-button" target="_blank" rel="noopener" @click.stop>
             Reservar
           </a>
