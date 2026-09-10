@@ -1,8 +1,8 @@
 <template>
   <section class="presentation">
-    <UiSectionLabel>Nuestra carta</UiSectionLabel>
-    <h2>Una bebida para cada <span>momento</span></h2>
-    <p>Descubre nuestra selección de margaritas, daiquiris, clásicos, sodas y cervezas.</p>
+    <UiSectionLabel>Vive Patrimonio</UiSectionLabel>
+    <h2>Más que un bar, <span>una experiencia frente al río</span></h2>
+    <p>Bebidas, cocina típica, tours en lancha y suéteres con sello local. Todo en un mismo lugar, con la brisa del Sinú de fondo.</p>
   </section>
 </template>
 

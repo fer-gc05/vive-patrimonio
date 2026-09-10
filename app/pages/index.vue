@@ -20,7 +20,11 @@ onMounted(() => {
 <template>
   <main>
     <HomeHeroSection />
+    <HomeAboutSection />
+    <HomeMissionVisionSection />
     <HomePresentationSection />
+    <HomeOfferingsBar />
+    <HomeSweatersSection />
     <HomeDrinksSection />
     <HomeFoodSection />
     <HomeToursSection />

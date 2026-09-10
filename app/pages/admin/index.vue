@@ -9,6 +9,7 @@ const stats = ref({
   drinks: 0,
   dishes: 0,
   tours: 0,
+  sweaters: 0,
   gallery: 0
 })
 
@@ -16,12 +17,14 @@ onMounted(async () => {
   const { count: drinksCount } = await supabase.from('drinks').select('*', { count: 'exact', head: true })
   const { count: dishesCount } = await supabase.from('dishes').select('*', { count: 'exact', head: true })
   const { count: toursCount } = await supabase.from('tours').select('*', { count: 'exact', head: true })
+  const { count: sweatersCount } = await supabase.from('sweaters').select('*', { count: 'exact', head: true })
   const { count: galleryCount } = await supabase.from('gallery').select('*', { count: 'exact', head: true })
 
   stats.value = {
     drinks: drinksCount || 0,
     dishes: dishesCount || 0,
     tours: toursCount || 0,
+    sweaters: sweatersCount || 0,
     gallery: galleryCount || 0
   }
 })
@@ -58,6 +61,14 @@ onMounted(async () => {
       </div>
 
       <div class="stat-card">
+        <div class="stat-icon">🧶</div>
+        <div class="stat-content">
+          <h3>{{ stats.sweaters }}</h3>
+          <p>Suéteres</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
         <div class="stat-icon">📷</div>
         <div class="stat-content">
           <h3>{{ stats.gallery }}</h3>
@@ -80,6 +91,10 @@ onMounted(async () => {
         <NuxtLink to="/admin/tours" class="action-card">
           <span class="action-icon">➕</span>
           <span>Agregar tour</span>
+        </NuxtLink>
+        <NuxtLink to="/admin/sweaters" class="action-card">
+          <span class="action-icon">🧶</span>
+          <span>Agregar suéter</span>
         </NuxtLink>
         <NuxtLink to="/admin/gallery" class="action-card">
           <span class="action-icon">📤</span>

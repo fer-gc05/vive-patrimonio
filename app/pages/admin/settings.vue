@@ -19,7 +19,16 @@ const form = ref({
   hero_subtitle: '',
   hero_image_url: '',
   hero_video_url: '',
-  experience_image_url: ''
+  experience_image_url: '',
+  about_title: '',
+  about_text: '',
+  about_image_url: '',
+  mission_title: '',
+  mission_text: '',
+  vision_title: '',
+  vision_text: '',
+  offerings_title: '',
+  offerings_subtitle: ''
 })
 
 const fetchSettings = async () => {
@@ -142,25 +151,72 @@ onMounted(fetchSettings)
         </div>
 
         <div class="form-section">
-          <h2>Imágenes del sitio</h2>
+          <h2>Sobre el negocio</h2>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>Título Quiénes somos</label>
+              <input v-model="form.about_title" type="text" placeholder="Quiénes somos" />
+            </div>
+            <div class="form-group full-width">
+              <label>Texto Quiénes somos</label>
+              <textarea v-model="form.about_text" rows="4" placeholder="Cuenta qué hace Vive Patrimonio..."></textarea>
+            </div>
+            <div class="form-group full-width">
+              <AdminImageUpload v-model="form.about_image_url" bucket="site" label="Foto Quiénes somos" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Misión y Visión</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Título Misión</label>
+              <input v-model="form.mission_title" type="text" placeholder="Misión" />
+            </div>
+            <div class="form-group">
+              <label>Título Visión</label>
+              <input v-model="form.vision_title" type="text" placeholder="Visión" />
+            </div>
+            <div class="form-group full-width">
+              <label>Texto Misión</label>
+              <textarea v-model="form.mission_text" rows="3"></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label>Texto Visión</label>
+              <textarea v-model="form.vision_text" rows="3"></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label>Título Oferta (barra verde)</label>
+              <input v-model="form.offerings_title" type="text" placeholder="Todo lo que te espera" />
+            </div>
+            <div class="form-group full-width">
+              <label>Subtítulo Oferta</label>
+              <input v-model="form.offerings_subtitle" type="text" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Imágenes y video del sitio</h2>
 
           <div class="form-grid">
             <div class="form-group full-width">
               <AdminImageUpload
                 v-model="form.hero_image_url"
                 bucket="site"
-                label="Imagen de fondo del Hero"
+                label="Imagen de fondo del Hero (poster del video)"
               />
-              <small>Imagen principal que se muestra detrás del título. Formato JPEG o PNG.</small>
+              <small>Imagen principal detrás del título. Se usa como poster mientras carga el video.</small>
             </div>
 
             <div class="form-group full-width">
               <AdminVideoUpload
                 v-model="form.hero_video_url"
                 bucket="site"
-                label="Video del Hero (opcional)"
+                label="Video del Hero - se ve en TODOS los dispositivos"
               />
-              <small>Se muestra en pantallas de escritorio. Sube el video en la mejor calidad posible (MP4 recomendado). Si está vacío, solo se muestra la imagen.</small>
+              <small>MP4 recomendado, máximo 30MB, relación 16:9. Se auto-reproduce silenciado en móvil y desktop.</small>
             </div>
 
             <div class="form-group full-width">

@@ -44,6 +44,20 @@ export interface GalleryImage {
   sort_order: number
 }
 
+export interface Sweater {
+  id: string
+  created_at: string
+  name: string
+  type: string
+  description: string
+  price: number | null
+  image_url: string | null
+  sizes: string[]
+  colors: string[]
+  available: boolean
+  sort_order: number
+}
+
 export interface Settings {
   id: number
   whatsapp_number: string
@@ -53,4 +67,13 @@ export interface Settings {
   hero_image_url: string | null
   hero_video_url: string | null
   experience_image_url: string | null
+  about_title: string | null
+  about_text: string | null
+  about_image_url: string | null
+  mission_title: string | null
+  mission_text: string | null
+  vision_title: string | null
+  vision_text: string | null
+  offerings_title: string | null
+  offerings_subtitle: string | null
 }

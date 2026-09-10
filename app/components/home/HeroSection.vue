@@ -39,6 +39,7 @@ onMounted(async () => {
       muted
       loop
       playsinline
+      preload="auto"
       :poster="heroImageUrl"
       aria-hidden="true"
     >
@@ -50,6 +51,7 @@ onMounted(async () => {
         :src="heroImageUrl"
         alt="Vive Patrimonio sobre el río Sinú"
         class="hero-image"
+        :class="{ 'hero-image--hidden': loaded && heroVideoUrl }"
       />
     </Transition>
     <div class="hero-overlay"></div>
@@ -58,8 +60,8 @@ onMounted(async () => {
       <h1 v-html="heroTitleHtml"></h1>
       <p v-html="heroSubtitle"></p>
       <div class="hero-actions">
-        <UiMainButton href="#carta">VER CARTA</UiMainButton>
-        <UiGhostButton href="#tours">VER TOURS</UiGhostButton>
+        <UiMainButton href="#nosotros">CONÓCENOS</UiMainButton>
+        <UiGhostButton href="#oferta">QUÉ OFRECEMOS</UiGhostButton>
       </div>
     </div>
     <div class="scroll">DESLIZA ↓</div>
@@ -84,7 +86,7 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: none;
+  display: block;
 }
 
 .hero-image {
@@ -93,6 +95,11 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-image--hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hero-fade-enter-active {
@@ -153,16 +160,6 @@ onMounted(async () => {
   letter-spacing: 3px;
   color: rgba(255, 255, 255, 0.7);
   z-index: 2;
-}
-
-@media (min-width: 701px) {
-  .hero-video {
-    display: block;
-  }
-
-  .hero-video ~ .hero-image {
-    opacity: 0;
-  }
 }
 
 @include respond(tablet) {

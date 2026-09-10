@@ -11,10 +11,12 @@ const closeMenu = () => {
 
 const navLinks = [
   { label: 'Inicio', href: '#inicio' },
-  { label: 'Bebidas', href: '#carta' },
-  { label: 'Comida', href: '#comida' },
+  { label: 'Nosotros', href: '#nosotros' },
+  { label: 'Misión', href: '#mision' },
+  { label: 'Oferta', href: '#oferta' },
+  { label: 'Suéteres', href: '#sueteres' },
+  { label: 'Carta', href: '#carta' },
   { label: 'Tours', href: '#tours' },
-  { label: 'Experiencia', href: '#experiencia' },
   { label: 'Galería', href: '#galeria' },
   { label: 'Contacto', href: '#contacto' }
 ]

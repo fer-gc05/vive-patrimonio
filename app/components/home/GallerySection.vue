@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { fetchGallery } = useGallery()
-const images = ref([])
+const images = ref<any[]>([])
 
 onMounted(async () => {
   images.value = await fetchGallery()
@@ -12,18 +12,23 @@ onMounted(async () => {
     <div class="gallery-title">
       <UiSectionLabel>Galería</UiSectionLabel>
       <h2>Vive el momento.</h2>
+      <p class="gallery-subtitle">Fotos verticales u horizontales — todas encajan como un tetris visual.</p>
     </div>
     <p v-if="images.length === 0" class="empty-state">
       No hay fotos disponibles por el momento.
     </p>
-    <div v-else class="gallery-grid">
-      <img
-        v-for="(image, index) in images"
+    <div v-else class="masonry">
+      <figure
+        v-for="image in images"
         :key="image.id"
-        :src="image.image_url"
-        :alt="image.alt"
-        loading="lazy"
-      />
+        class="masonry-item"
+      >
+        <img
+          :src="image.image_url"
+          :alt="image.alt || 'Foto Vive Patrimonio'"
+          loading="lazy"
+        />
+      </figure>
     </div>
   </section>
 </template>
@@ -31,11 +36,12 @@ onMounted(async () => {
 <style scoped lang="scss">
 .gallery {
   padding: 100px 6%;
+  background: #fff;
 }
 
 .gallery-title {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 44px;
 }
 
 .gallery-title h2 {
@@ -43,25 +49,37 @@ onMounted(async () => {
   font-size: clamp(45px, 6vw, 75px);
   line-height: 0.95;
   font-weight: 500;
-  margin: 20px 0;
+  margin: 16px 0 10px;
 }
 
-.gallery-grid {
-  max-width: 1200px;
+.gallery-subtitle {
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.masonry {
+  max-width: 1280px;
   margin: auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 300px 300px;
-  gap: 15px;
+  column-count: 3;
+  column-gap: 14px;
 }
 
-.gallery-grid img {
-  height: 100%;
-  object-fit: cover;
-}
-
-.gallery-grid img:first-child {
-  grid-row: span 2;
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 14px;
+  overflow: hidden;
+  background: var(--cream);
+  border-radius: 4px;
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.45s ease;
+  }
+  &:hover img { transform: scale(1.03); }
 }
 
 .empty-state {
@@ -73,24 +91,25 @@ onMounted(async () => {
   line-height: 1.7;
 }
 
+@media (max-width: 1000px) {
+  .masonry { column-count: 2; }
+}
+
 @include respond(tablet) {
   .gallery {
-    padding: 70px 16px;
+    padding: 64px 12px;
   }
-
   .gallery-title {
-    margin-bottom: 35px;
+    margin-bottom: 28px;
   }
+  .masonry {
+    column-count: 2;
+    column-gap: 8px;
+  }
+  .masonry-item { margin-bottom: 8px; }
+}
 
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 210px 170px 170px;
-    gap: 9px;
-  }
-
-  .gallery-grid img:first-child {
-    grid-column: span 2;
-    grid-row: span 1;
-  }
+@media (max-width: 520px) {
+  .masonry { column-count: 1; }
 }
 </style>
