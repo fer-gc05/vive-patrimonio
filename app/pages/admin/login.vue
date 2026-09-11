@@ -8,6 +8,7 @@ const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const loading = ref(false)
 const error = ref('')
 
@@ -58,13 +59,19 @@ onMounted(async () => {
 
         <div class="form-group">
           <label for="password">Contraseña</label>
-          <input
-            id="password"
-            v-model="password"
-            type="password"
-            required
-            placeholder="••••••••"
-          />
+          <div class="password-wrapper">
+            <input
+              id="password"
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              placeholder="••••••••"
+            />
+            <button type="button" class="toggle-password" @click="showPassword = !showPassword" :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'" tabindex="-1">
+              <span v-if="showPassword">🙈</span>
+              <span v-else>👁️</span>
+            </button>
+          </div>
         </div>
 
         <div v-if="error" class="error-message">
@@ -133,6 +140,35 @@ onMounted(async () => {
 .form-group input:focus {
   outline: none;
   border-color: #123b32;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  padding-right: 44px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 6px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  color: #123b32;
 }
 
 .error-message {
