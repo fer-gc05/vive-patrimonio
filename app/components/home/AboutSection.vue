@@ -2,18 +2,16 @@
 const { fetchSettings } = useSettings()
 const title = ref('Quiénes somos')
 const text = ref('En Vive Patrimonio celebramos el río Sinú. Somos un bar y restaurante frente al agua donde la cultura, la gastronomía y los atardeceres se viven con calma y alegría. Nacimos para conectar a locales y visitantes con el patrimonio natural de Montería.')
-const imageUrl = ref('')
-const videoUrl = ref('')
-const loaded = ref(false)
+const imageUrl = ref('/img/atardecer.jpg')
+const videoUrl = ref('/video/vive-patrimonio.mp4')
 
 onMounted(async () => {
   const s = await fetchSettings()
   if (s?.about_title) title.value = s.about_title
   if (s?.about_text) text.value = s.about_text
-  imageUrl.value = s?.about_image_url || s?.experience_image_url || '/img/atardecer.jpg'
-  // Si existe video configurado úsalo, si no usa el video local por defecto
-  videoUrl.value = (s as any)?.about_video_url || '/video/vive-patrimonio.mp4'
-  loaded.value = true
+  if (s?.about_image_url) imageUrl.value = s.about_image_url
+  else if (s?.experience_image_url) imageUrl.value = s.experience_image_url
+  if ((s as any)?.about_video_url) videoUrl.value = (s as any).about_video_url
 })
 </script>
 
@@ -35,21 +33,19 @@ onMounted(async () => {
         </div>
       </div>
       <div class="about-media" data-reveal>
-        <Transition name="img-fade">
-          <video
-            v-if="loaded && videoUrl"
-            :src="videoUrl"
-            :poster="imageUrl"
-            controls
-            preload="metadata"
-            playsinline
-            controlsList="nodownload"
-            class="about-video"
-          >
-            Tu navegador no soporta video.
-          </video>
-          <img v-else-if="loaded" :src="imageUrl" alt="Vive Patrimonio - quiénes somos" loading="lazy" />
-        </Transition>
+        <video
+          v-if="videoUrl"
+          :src="videoUrl"
+          :poster="imageUrl"
+          controls
+          preload="metadata"
+          playsinline
+          controlsList="nodownload"
+          class="about-video"
+        >
+          Tu navegador no soporta video.
+        </video>
+        <img v-else :src="imageUrl" alt="Vive Patrimonio - quiénes somos" loading="lazy" decoding="async" />
       </div>
     </div>
   </section>
@@ -128,8 +124,6 @@ onMounted(async () => {
     border-radius: 4px;
   }
 }
-.img-fade-enter-active { transition: opacity 0.8s ease; }
-.img-fade-enter-from { opacity: 0; }
 
 @include respond(tablet) {
   .about { padding: 60px 16px; }

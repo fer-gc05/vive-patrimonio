@@ -4,36 +4,24 @@ const heroTitle = ref('Vive el río.\nVive Patrimonio.')
 const heroSubtitle = ref(
   'Una experiencia frente al río Sinú, acompañada de bebidas, sabores, tours en lancha y atardeceres inolvidables.'
 )
-const heroImageUrl = ref('')
+const heroImageUrl = ref('/img/hero.jpg')
 const heroVideoUrl = ref('')
-const loaded = ref(false)
 
 const heroTitleHtml = computed(() => heroTitle.value.replace(/\n/g, '<br>'))
 
 onMounted(async () => {
   const settings = await fetchSettings()
-  if (settings?.hero_title) {
-    heroTitle.value = settings.hero_title
-  }
-  if (settings?.hero_subtitle) {
-    heroSubtitle.value = settings.hero_subtitle
-  }
-  if (settings?.hero_image_url) {
-    heroImageUrl.value = settings.hero_image_url
-  } else {
-    heroImageUrl.value = '/img/hero.jpg'
-  }
-  if (settings?.hero_video_url) {
-    heroVideoUrl.value = settings.hero_video_url
-  }
-  loaded.value = true
+  if (settings?.hero_title) heroTitle.value = settings.hero_title
+  if (settings?.hero_subtitle) heroSubtitle.value = settings.hero_subtitle
+  if (settings?.hero_image_url) heroImageUrl.value = settings.hero_image_url
+  if (settings?.hero_video_url) heroVideoUrl.value = settings.hero_video_url
 })
 </script>
 
 <template>
   <section class="hero" id="inicio">
     <video
-      v-if="loaded && heroVideoUrl"
+      v-if="heroVideoUrl"
       class="hero-video"
       autoplay
       muted
@@ -45,15 +33,18 @@ onMounted(async () => {
     >
       <source :src="heroVideoUrl" type="video/mp4" />
     </video>
-    <Transition name="hero-fade">
-      <img
-        v-if="loaded"
-        :src="heroImageUrl"
-        alt="Vive Patrimonio sobre el río Sinú"
-        class="hero-image"
-        :class="{ 'hero-image--hidden': loaded && heroVideoUrl }"
-      />
-    </Transition>
+    <!-- Imagen hero carga EAGER y sin v-if para que salga en SSR al instante -->
+    <img
+      :src="heroImageUrl"
+      alt="Vive Patrimonio sobre el río Sinú"
+      class="hero-image"
+      :class="{ 'hero-image--hidden': heroVideoUrl }"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      width="1920"
+      height="1080"
+    />
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <span class="eyebrow">BAR · RESTAURANTE · TOURS · RÍO SINÚ</span>
@@ -100,14 +91,6 @@ onMounted(async () => {
 .hero-image--hidden {
   opacity: 0;
   pointer-events: none;
-}
-
-.hero-fade-enter-active {
-  transition: opacity 1s ease;
-}
-
-.hero-fade-enter-from {
-  opacity: 0;
 }
 
 .hero-overlay {
