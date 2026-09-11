@@ -23,6 +23,7 @@ const form = ref({
   about_title: '',
   about_text: '',
   about_image_url: '',
+  about_video_url: '',
   mission_title: '',
   mission_text: '',
   vision_title: '',
@@ -162,7 +163,12 @@ onMounted(fetchSettings)
               <textarea v-model="form.about_text" rows="4" placeholder="Cuenta qué hace Vive Patrimonio..."></textarea>
             </div>
             <div class="form-group full-width">
-              <AdminImageUpload v-model="form.about_image_url" bucket="site" label="Foto Quiénes somos" />
+              <AdminImageUpload v-model="form.about_image_url" bucket="site" label="Foto Quiénes somos (se usa como poster del video)" />
+              <small>Se muestra mientras carga el video o si no hay video configurado.</small>
+            </div>
+            <div class="form-group full-width">
+              <AdminVideoUpload v-model="form.about_video_url" bucket="site" label="Video Quiénes somos - reproductor con barra de tiempo" />
+              <small>MP4 con controles nativos (play, barra de tiempo, volumen, pantalla completa). Se ve perfecto en celular y PC. Recomendado 16:9.</small>
             </div>
           </div>
         </div>

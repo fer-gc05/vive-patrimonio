@@ -83,6 +83,7 @@ values (
 alter table settings add column if not exists about_title text default 'Quiénes somos';
 alter table settings add column if not exists about_text text default 'En Vive Patrimonio celebramos el río Sinú. Somos un bar y restaurante frente al agua donde la cultura, la gastronomía y los atardeceres se viven con calma y alegría.';
 alter table settings add column if not exists about_image_url text;
+alter table settings add column if not exists about_video_url text;
 alter table settings add column if not exists mission_title text default 'Misión';
 alter table settings add column if not exists mission_text text default 'Brindar una experiencia auténtica frente al río Sinú, con sabores típicos, atención cercana y recorridos que conectan a visitantes y locales con nuestro patrimonio natural y cultural.';
 alter table settings add column if not exists vision_title text default 'Visión';

@@ -70,6 +70,7 @@ export interface Settings {
   about_title: string | null
   about_text: string | null
   about_image_url: string | null
+  about_video_url: string | null
   mission_title: string | null
   mission_text: string | null
   vision_title: string | null

@@ -3,6 +3,7 @@ const { fetchSettings } = useSettings()
 const title = ref('Quiénes somos')
 const text = ref('En Vive Patrimonio celebramos el río Sinú. Somos un bar y restaurante frente al agua donde la cultura, la gastronomía y los atardeceres se viven con calma y alegría. Nacimos para conectar a locales y visitantes con el patrimonio natural de Montería.')
 const imageUrl = ref('')
+const videoUrl = ref('')
 const loaded = ref(false)
 
 onMounted(async () => {
@@ -10,6 +11,8 @@ onMounted(async () => {
   if (s?.about_title) title.value = s.about_title
   if (s?.about_text) text.value = s.about_text
   imageUrl.value = s?.about_image_url || s?.experience_image_url || '/img/atardecer.jpg'
+  // Si existe video configurado úsalo, si no usa el video local por defecto
+  videoUrl.value = (s as any)?.about_video_url || '/video/vive-patrimonio.mp4'
   loaded.value = true
 })
 </script>
@@ -33,7 +36,19 @@ onMounted(async () => {
       </div>
       <div class="about-media" data-reveal>
         <Transition name="img-fade">
-          <img v-if="loaded" :src="imageUrl" alt="Vive Patrimonio - quiénes somos" loading="lazy" />
+          <video
+            v-if="loaded && videoUrl"
+            :src="videoUrl"
+            :poster="imageUrl"
+            controls
+            preload="metadata"
+            playsinline
+            controlsList="nodownload"
+            class="about-video"
+          >
+            Tu navegador no soporta video.
+          </video>
+          <img v-else-if="loaded" :src="imageUrl" alt="Vive Patrimonio - quiénes somos" loading="lazy" />
         </Transition>
       </div>
     </div>
@@ -96,8 +111,22 @@ onMounted(async () => {
   height: 520px;
   overflow: hidden;
   border-radius: 4px;
-  background: var(--green-dark);
-  img { width: 100%; height: 100%; object-fit: cover; }
+  background: #000;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .about-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: #000;
+    border-radius: 4px;
+  }
 }
 .img-fade-enter-active { transition: opacity 0.8s ease; }
 .img-fade-enter-from { opacity: 0; }
@@ -105,6 +134,17 @@ onMounted(async () => {
 @include respond(tablet) {
   .about { padding: 60px 16px; }
   .about-inner { grid-template-columns: 1fr; gap: 28px; }
-  .about-media { height: 360px; }
+  .about-media {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    min-height: 220px;
+    max-height: 420px;
+    .about-video {
+      object-fit: contain;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      max-height: 420px;
+    }
+  }
 }
 </style>
