@@ -9,12 +9,22 @@ const heroVideoUrl = ref('')
 
 const heroTitleHtml = computed(() => heroTitle.value.replace(/\n/g, '<br>'))
 
-onMounted(async () => {
+// Carga en SSR + cliente antes del primer render para evitar parpadeo
+// Si Supabase tiene otra imagen, ya viene desde el servidor y no hace swap de /img/hero.jpg
+try {
   const settings = await fetchSettings()
   if (settings?.hero_title) heroTitle.value = settings.hero_title
   if (settings?.hero_subtitle) heroSubtitle.value = settings.hero_subtitle
   if (settings?.hero_image_url) heroImageUrl.value = settings.hero_image_url
   if (settings?.hero_video_url) heroVideoUrl.value = settings.hero_video_url
+} catch (e) {
+  // fallback a valores por defecto ya asignados
+  console.error('Hero settings fetch failed', e)
+}
+
+// preload dinámico del hero final (evita doble descarga)
+useHead({
+  link: [{ rel: 'preload', as: 'image', href: heroImageUrl.value, fetchpriority: 'high' as any }]
 })
 </script>
 
@@ -33,7 +43,6 @@ onMounted(async () => {
     >
       <source :src="heroVideoUrl" type="video/mp4" />
     </video>
-    <!-- Imagen hero carga EAGER y sin v-if para que salga en SSR al instante -->
     <img
       :src="heroImageUrl"
       alt="Vive Patrimonio sobre el río Sinú"

@@ -23,7 +23,6 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/jpeg', href: '/icon.jpeg' },
-        { rel: 'preload', as: 'image', href: '/img/hero.jpg', fetchpriority: 'high' as any },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
