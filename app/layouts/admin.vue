@@ -46,6 +46,7 @@ const toggleSidebar = () => {
       </div>
       <nav class="sidebar-nav">
         <NuxtLink to="/admin" @click="closeSidebar">Dashboard</NuxtLink>
+        <NuxtLink to="/admin/analytics" @click="closeSidebar">📊 Visitas</NuxtLink>
         <NuxtLink to="/admin/drinks" @click="closeSidebar">Bebidas</NuxtLink>
         <NuxtLink to="/admin/dishes" @click="closeSidebar">Comida</NuxtLink>
         <NuxtLink to="/admin/tours" @click="closeSidebar">Tours</NuxtLink>

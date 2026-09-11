@@ -248,3 +248,28 @@ create policy "Authenticated delete on gallery bucket" on storage.objects
 
 create policy "Authenticated delete on site bucket" on storage.objects
   for delete to authenticated using (bucket_id = 'site');
+
+-- ============================================================
+-- Analytics: visitas por día/mes/año
+-- ============================================================
+create table if not exists page_views (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  path text,
+  referrer text,
+  user_agent text
+);
+
+alter table page_views enable row level security;
+
+drop policy if exists "Allow anon insert page_views" on page_views;
+create policy "Allow anon insert page_views" on page_views
+  for insert to anon with check (true);
+
+drop policy if exists "Allow authenticated read page_views" on page_views;
+create policy "Allow authenticated read page_views" on page_views
+  for select to authenticated using (true);
+
+drop policy if exists "Allow authenticated delete page_views" on page_views;
+create policy "Allow authenticated delete page_views" on page_views
+  for delete to authenticated using (true);

@@ -28,6 +28,13 @@ onMounted(async () => {
     gallery: galleryCount || 0
   }
 })
+
+const analytics = ref<{ today: number; thisMonth: number; thisYear: number } | null>(null)
+onMounted(async () => {
+  const { getStats } = useAnalytics()
+  const s = await getStats()
+  if (s) analytics.value = { today: s.today, thisMonth: s.thisMonth, thisYear: s.thisYear }
+})
 </script>
 
 <template>
@@ -75,6 +82,14 @@ onMounted(async () => {
           <p>Fotos</p>
         </div>
       </div>
+
+      <NuxtLink to="/admin/analytics" class="stat-card" style="text-decoration:none">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h3>{{ analytics ? analytics.today : '—' }}</h3>
+          <p>Visitas hoy → ver más</p>
+        </div>
+      </NuxtLink>
     </div>
 
     <div class="quick-actions">
