@@ -17,10 +17,10 @@ onMounted(async () => {
       <h2>{{ title }}</h2>
       <p>{{ subtitle }}</p>
       <div class="offerings-nav">
-        <a href="#carta">Bebidas</a>
-        <a href="#comida">Comida</a>
         <a href="#tours">Tours</a>
+        <a href="#cabanas">Cabañas</a>
         <a href="#sueteres">Suéteres</a>
+        <a href="#carta">Carta</a>
       </div>
     </div>
   </section>
