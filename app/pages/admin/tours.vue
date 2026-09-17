@@ -19,10 +19,12 @@ const form = ref({
   description: '',
   price: null as number | null,
   image_url: '',
+  images: [] as string[],
   whatsapp_message: '',
   available: true,
   sort_order: 0
 })
+const uploadingImage = ref(false)
 
 const fetchTours = async () => {
   loading.value = true
@@ -42,7 +44,18 @@ const fetchTours = async () => {
 const openForm = (tour?: Tour) => {
   if (tour) {
     editingTour.value = tour
-    form.value = { ...tour }
+    form.value = {
+      name: tour.name,
+      duration: tour.duration,
+      type: tour.type,
+      description: tour.description || '',
+      price: tour.price,
+      image_url: tour.image_url || '',
+      images: tour.images ? [...tour.images] : [],
+      whatsapp_message: tour.whatsapp_message || '',
+      available: tour.available,
+      sort_order: tour.sort_order
+    }
   } else {
     editingTour.value = null
     form.value = {
@@ -52,6 +65,7 @@ const openForm = (tour?: Tour) => {
       description: '',
       price: null,
       image_url: '',
+      images: [],
       whatsapp_message: '',
       available: true,
       sort_order: 0
@@ -68,10 +82,23 @@ const closeForm = () => {
 const saveTour = async () => {
   if (!form.value.name) return
 
+  const payload = {
+    name: form.value.name,
+    duration: form.value.duration,
+    type: form.value.type,
+    description: form.value.description,
+    price: form.value.price,
+    image_url: form.value.image_url,
+    images: form.value.images,
+    whatsapp_message: form.value.whatsapp_message,
+    available: form.value.available,
+    sort_order: form.value.sort_order
+  }
+
   if (editingTour.value) {
     const { error } = await supabase
       .from('tours')
-      .update(form.value)
+      .update(payload)
       .eq('id', editingTour.value.id)
 
     if (error) {
@@ -81,7 +108,7 @@ const saveTour = async () => {
   } else {
     const { error } = await supabase
       .from('tours')
-      .insert([form.value])
+      .insert([payload])
 
     if (error) {
       console.error('Error inserting:', error)
@@ -112,6 +139,26 @@ const deleteTour = async (id: string) => {
 const formatPrice = (price: number | null) => {
   if (!price) return '-'
   return `$${price.toLocaleString('es-CO')}`
+}
+
+const { uploadImage } = useStorage()
+
+const handleMultiImageUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  uploadingImage.value = true
+  const url = await uploadImage(file, 'tours')
+  if (url) {
+    form.value.images.push(url)
+  }
+  uploadingImage.value = false
+  target.value = ''
+}
+
+const removeImage = (index: number) => {
+  form.value.images.splice(index, 1)
 }
 
 onMounted(fetchTours)
@@ -159,11 +206,27 @@ onMounted(fetchTours)
             </div>
 
             <div class="form-group full-width">
+              <label>Imagen principal (legacy)</label>
               <AdminImageUpload
                 v-model="form.image_url"
                 bucket="tours"
                 label="Imagen del tour"
               />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Fotos del tour (carrusel)</label>
+              <div class="multi-images">
+                <div v-for="(img, i) in form.images" :key="i" class="multi-image-preview">
+                  <img :src="img" :alt="`Foto ${i + 1}`" />
+                  <button type="button" @click="removeImage(i)" class="remove-btn">✕</button>
+                </div>
+                <label class="upload-more" :class="{ uploading: uploadingImage }">
+                  <input type="file" accept="image/*" @change="handleMultiImageUpload" :disabled="uploadingImage" />
+                  <span v-if="uploadingImage">...</span>
+                  <span v-else>+</span>
+                </label>
+              </div>
             </div>
 
             <div class="form-group full-width">
@@ -455,6 +518,74 @@ td {
 
 .btn-icon.danger:hover {
   background: #fee2e2;
+}
+
+.multi-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.multi-image-preview {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f0f0f0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.multi-image-preview .remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.9);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-more {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #123b32;
+  }
+
+  &.uploading {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  input {
+    display: none;
+  }
+
+  span {
+    font-size: 28px;
+    color: #999;
+  }
 }
 
 @media (max-width: 768px) {

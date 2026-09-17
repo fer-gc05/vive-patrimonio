@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Tour } from '~/composables/useTours'
+import type { Tour } from '~/types'
 
-const { fetchTours, getWhatsappLink } = useTours()
+const { fetchTours } = useTours()
 const { fetchSettings } = useSettings()
 const tours = ref<Tour[]>([])
 const whatsappNumber = ref('')
@@ -51,7 +51,7 @@ onMounted(async () => {
     <UiTourModal
       v-if="selectedTour"
       :tour="selectedTour"
-      :whatsapp-link="getWhatsappLink(selectedTour.whatsapp_message, whatsappNumber)"
+      :whatsapp-number="whatsappNumber"
       @close="closeModal"
     />
   </section>

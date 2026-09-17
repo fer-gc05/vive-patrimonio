@@ -12,11 +12,11 @@ const closeMenu = () => {
 const navLinks = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Misión', href: '#mision' },
   { label: 'Oferta', href: '#oferta' },
+  { label: 'Tours', href: '#tours' },
+  { label: 'Cabañas', href: '#cabanas' },
   { label: 'Suéteres', href: '#sueteres' },
   { label: 'Carta', href: '#carta' },
-  { label: 'Tours', href: '#tours' },
   { label: 'Galería', href: '#galeria' },
   { label: 'Contacto', href: '#contacto' }
 ]

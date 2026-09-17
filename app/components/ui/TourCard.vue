@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Tour } from '~/composables/useTours'
+import type { Tour } from '~/types'
 
 interface Props {
   tour: Tour
@@ -9,25 +9,34 @@ defineProps<Props>()
 const emit = defineEmits<{ (e: 'click', tour: Tour): void }>()
 
 const hasError = ref(false)
+const activeImageIndex = ref(0)
 
 const formatPrice = (price: number | null) => {
   if (!price) return null
   return '$' + price.toLocaleString('es-CO')
 }
+
+const getMainImage = (tour: Tour): string | null => {
+  if (tour.images?.length) return tour.images[0]
+  return tour.image_url
+}
 </script>
 
 <template>
   <article class="tour" data-reveal @click="emit('click', tour)">
-    <div class="tour-photo" :class="{ 'no-photo': !tour.image_url || hasError }">
+    <div class="tour-photo" :class="{ 'no-photo': !getMainImage(tour) || hasError }">
       <img
-        v-if="tour.image_url"
-        :key="tour.image_url"
-        :src="tour.image_url"
+        v-if="getMainImage(tour)"
+        :key="getMainImage(tour)"
+        :src="getMainImage(tour)"
         :alt="tour.name"
         loading="lazy"
         @error="hasError = true"
         @load="hasError = false"
       />
+      <div v-if="tour.images?.length > 1" class="image-count">
+        📷 {{ tour.images.length }}
+      </div>
     </div>
     <div class="tour-content">
       <h3>{{ tour.name }}</h3>
@@ -71,6 +80,18 @@ const formatPrice = (price: number | null) => {
 
 .tour:hover .tour-photo img {
   transform: scale(1.06);
+}
+
+.image-count {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .tour-content {

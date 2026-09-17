@@ -31,6 +31,25 @@ export interface Tour {
   description: string
   price: number | null
   image_url: string | null
+  images: string[]
+  whatsapp_message: string
+  available: boolean
+  sort_order: number
+}
+
+export interface Cabin {
+  id: string
+  created_at: string
+  name: string
+  rooms: number
+  bathrooms: number
+  beds: number
+  capacity: number
+  description: string
+  services: string[]
+  location: string
+  price: number | null
+  images: string[]
   whatsapp_message: string
   available: boolean
   sort_order: number
