@@ -176,11 +176,15 @@ onMounted(async () => {
     border-radius: 6px;
     overflow: hidden;
     background: var(--cream);
-    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    min-height: 260px;
+    max-height: 68vh;
     img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      max-height: 68vh;
+      object-fit: contain;
       display: block;
     }
   }

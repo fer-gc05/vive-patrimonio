@@ -33,16 +33,6 @@ const scrollToSection = (event: Event, href: string) => {
 
 <template>
   <header class="header">
-    <a href="#inicio" class="logo" @click="scrollToSection($event, '#inicio')">
-      <span class="logo-circle">
-        <img src="/icon.jpeg" alt="VP" />
-      </span>
-      <span class="logo-text">
-        <strong>VIVE</strong>
-        <small>PATRIMONIO</small>
-      </span>
-    </a>
-
     <button
       class="menu-button"
       aria-label="Abrir menú"
@@ -53,6 +43,16 @@ const scrollToSection = (event: Event, href: string) => {
       <span></span>
       <span></span>
     </button>
+
+    <a href="#inicio" class="logo" @click="scrollToSection($event, '#inicio')">
+      <span class="logo-circle">
+        <img src="/icon.jpeg" alt="VP" />
+      </span>
+      <span class="logo-text">
+        <strong>VIVE</strong>
+        <small>PATRIMONIO</small>
+      </span>
+    </a>
 
     <nav class="nav" :class="{ open: isOpen }" id="nav">
       <a
@@ -81,6 +81,7 @@ const scrollToSection = (event: Event, href: string) => {
   z-index: 1000;
   background: rgba(9, 37, 31, 0.94);
   backdrop-filter: blur(12px);
+  gap: 16px;
 }
 
 .logo {
@@ -157,7 +158,13 @@ const scrollToSection = (event: Event, href: string) => {
 @include respond(tablet) {
   .header {
     height: 68px;
-    padding: 0 18px;
+    padding: 0 16px;
+    justify-content: flex-start;
+  }
+
+  .logo {
+    order: 2;
+    flex: 1;
   }
 
   .logo-circle {
@@ -167,24 +174,29 @@ const scrollToSection = (event: Event, href: string) => {
 
   .menu-button {
     display: block;
+    order: 1;
   }
 
   .nav {
-    position: absolute;
+    position: fixed;
     top: 68px;
     left: 0;
-    width: 100%;
-    padding: 25px;
+    width: 300px;
+    max-width: 82vw;
+    height: calc(100dvh - 68px);
+    padding: 28px 24px;
     background: var(--green-dark);
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
-    transform: translateY(-150%);
-    transition: 0.35s;
+    gap: 22px;
+    transform: translateX(-100%);
+    transition: transform 0.32s ease;
+    box-shadow: 8px 0 24px rgba(0,0,0,0.25);
+    overflow-y: auto;
   }
 
   .nav.open {
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }
 
