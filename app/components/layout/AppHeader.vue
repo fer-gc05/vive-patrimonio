@@ -181,12 +181,18 @@ const scrollToSection = (event: Event, href: string) => {
     padding: 28px 24px;
     background: var(--green-dark);
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
     gap: 22px;
     transform: translateX(100%);
     transition: transform 0.32s ease;
     box-shadow: -8px 0 24px rgba(0,0,0,0.25);
     overflow-y: auto;
+    text-align: right;
+  }
+
+  .nav a {
+    width: 100%;
+    text-align: right;
   }
 
   .nav.open {
