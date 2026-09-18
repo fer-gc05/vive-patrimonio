@@ -1,6 +1,34 @@
 <script setup lang="ts">
 const { fetchGallery } = useGallery()
 const images = ref<any[]>([])
+const carouselRef = ref<HTMLElement | null>(null)
+const activeIndex = ref(0)
+
+const getScrollAmount = () => {
+  const el = carouselRef.value
+  if (!el) return 320
+  const first = el.firstElementChild as HTMLElement | null
+  const gap = parseInt(getComputedStyle(el).gap || '12', 10) || 12
+  if (first) return first.offsetWidth + gap
+  return el.clientWidth * 0.86
+}
+const scrollPrev = () => carouselRef.value?.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' })
+const scrollNext = () => carouselRef.value?.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
+const scrollToIndex = (i: number) => {
+  const el = carouselRef.value
+  if (!el) return
+  const gap = parseInt(getComputedStyle(el).gap || '12', 10) || 12
+  const first = el.firstElementChild as HTMLElement | null
+  const w = first ? first.offsetWidth + gap : el.clientWidth * 0.86
+  el.scrollTo({ left: w * i, behavior: 'smooth' })
+}
+const onScroll = () => {
+  const el = carouselRef.value
+  if (!el) return
+  const w = getScrollAmount()
+  if (!w) return
+  activeIndex.value = Math.max(0, Math.min(Math.round(el.scrollLeft / w), images.value.length - 1))
+}
 
 onMounted(async () => {
   images.value = await fetchGallery()
@@ -17,18 +45,27 @@ onMounted(async () => {
     <p v-if="images.length === 0" class="empty-state">
       No hay fotos disponibles por el momento.
     </p>
-    <div v-else class="masonry">
-      <figure
-        v-for="image in images"
-        :key="image.id"
-        class="masonry-item"
-      >
-        <img
-          :src="image.image_url"
-          :alt="image.alt || 'Foto Vive Patrimonio'"
-          loading="lazy"
-        />
+
+    <!-- Desktop: masonry -->
+    <div v-if="images.length" class="masonry">
+      <figure v-for="image in images" :key="image.id" class="masonry-item">
+        <img :src="image.image_url" :alt="image.alt || 'Foto Vive Patrimonio'" loading="lazy" />
       </figure>
+    </div>
+
+    <!-- Mobile: carousel -->
+    <div v-if="images.length" class="gallery-carousel-wrap">
+      <div ref="carouselRef" class="gallery-carousel" @scroll="onScroll">
+        <figure v-for="image in images" :key="`m-${image.id}`" class="carousel-item">
+          <img :src="image.image_url" :alt="image.alt || 'Foto Vive Patrimonio'" loading="lazy" />
+        </figure>
+      </div>
+      <button v-if="images.length > 1" class="carousel-arrow prev" aria-label="Anterior" @click="scrollPrev">‹</button>
+      <button v-if="images.length > 1" class="carousel-arrow next" aria-label="Siguiente" @click="scrollNext">›</button>
+      <div v-if="images.length > 1" class="carousel-dots">
+        <button v-for="(_, idx) in images" :key="idx" class="dot" :class="{ active: idx === activeIndex }" :aria-label="`Ir a foto ${idx+1}`" @click="scrollToIndex(idx)" />
+      </div>
+      <p v-if="images.length > 1" class="carousel-hint">Desliza para ver más →</p>
     </div>
   </section>
 </template>
@@ -46,7 +83,7 @@ onMounted(async () => {
 
 .gallery-title h2 {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(45px, 6vw, 75px);
+  font-size: clamp(38px, 6vw, 75px);
   line-height: 0.95;
   font-weight: 500;
   margin: 16px 0 10px;
@@ -82,6 +119,8 @@ onMounted(async () => {
   &:hover img { transform: scale(1.03); }
 }
 
+.gallery-carousel-wrap { display: none; }
+
 .empty-state {
   max-width: 600px;
   margin: 0 auto;
@@ -97,19 +136,100 @@ onMounted(async () => {
 
 @include respond(tablet) {
   .gallery {
-    padding: 64px 12px;
+    padding: 64px 0 48px;
   }
   .gallery-title {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
+    padding: 0 16px;
   }
-  .masonry {
-    column-count: 2;
-    column-gap: 8px;
-  }
-  .masonry-item { margin-bottom: 8px; }
-}
+  .gallery-title h2 { font-size: 40px; }
 
-@media (max-width: 520px) {
-  .masonry { column-count: 1; }
+  // Ocultar masonry en móvil, mostrar carrusel
+  .masonry { display: none; }
+
+  .gallery-carousel-wrap {
+    display: block;
+    position: relative;
+    max-width: 100%;
+  }
+
+  .gallery-carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 0 16px 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .carousel-item {
+    flex: 0 0 86vw;
+    max-width: 380px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--cream);
+    aspect-ratio: 4 / 3;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .carousel-arrow {
+    display: flex;
+    position: absolute;
+    top: 42%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    &:active { transform: translateY(-50%) scale(0.95); }
+    &.prev { left: 8px; }
+    &.next { right: 8px; }
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    &.active { background: var(--green); width: 22px; border-radius: 10px; }
+  }
+  .carousel-hint {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    color: var(--gray);
+    opacity: 0.8;
+  }
 }
 </style>

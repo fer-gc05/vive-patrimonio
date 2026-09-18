@@ -24,8 +24,7 @@ onMounted(() => {
 .back-to-top {
   position: fixed;
   right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 32px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -44,7 +43,7 @@ onMounted(() => {
 
 .back-to-top:hover {
   background: var(--green-dark);
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.08);
 }
 
 .fade-enter-active,
@@ -57,12 +56,14 @@ onMounted(() => {
   opacity: 0;
 }
 
-@include respond(mobile) {
+@include respond(tablet) {
   .back-to-top {
     right: 16px;
+    bottom: 88px;
     width: 42px;
     height: 42px;
     font-size: 18px;
+    opacity: 0.95;
   }
 }
 </style>

@@ -160,20 +160,30 @@ useHead({
   }
 
   .hero-content {
-    width: 88%;
-    padding-top: 50px;
+    width: 92%;
+    padding-top: 70px;
   }
 
   .hero h1 {
-    font-size: 60px;
+    font-size: clamp(42px, 11vw, 56px);
+    line-height: 0.88;
+    margin: 18px 0;
   }
 
   .hero-content p {
     font-size: 14px;
+    line-height: 1.6;
   }
 
   .hero-actions {
     gap: 10px;
+    :deep(.btn-primary),
+    :deep(.btn-ghost),
+    :deep(a) {
+      min-height: 44px;
+    }
   }
+
+  .eyebrow { font-size: 9px; letter-spacing: 2.5px; }
 }
 </style>

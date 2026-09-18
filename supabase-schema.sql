@@ -273,3 +273,9 @@ create policy "Allow authenticated read page_views" on page_views
 drop policy if exists "Allow authenticated delete page_views" on page_views;
 create policy "Allow authenticated delete page_views" on page_views
   for delete to authenticated using (true);
+
+-- ============================================================
+-- Migración: Pixels editables desde dashboard
+-- ============================================================
+alter table settings add column if not exists meta_pixel_id text;
+alter table settings add column if not exists gtm_id text;

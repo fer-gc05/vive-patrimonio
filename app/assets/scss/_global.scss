@@ -55,6 +55,19 @@ a {
   }
 }
 
+/* mobile-first polish */
+@media (max-width: 700px) {
+  html { font-size: 15px; }
+  body { -webkit-tap-highlight-color: transparent; }
+  a, button { min-height: 0; }
+  // ensure primary CTAs are thumb-friendly
+  .visit-actions a,
+  .hero-actions a,
+  .offerings-nav a {
+    min-height: 44px;
+  }
+}
+
 /* fallback for missing/broken photos */
 .no-photo img {
   display: none;

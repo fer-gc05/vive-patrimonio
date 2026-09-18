@@ -29,7 +29,9 @@ const form = ref({
   vision_title: '',
   vision_text: '',
   offerings_title: '',
-  offerings_subtitle: ''
+  offerings_subtitle: '',
+  meta_pixel_id: '',
+  gtm_id: ''
 })
 
 const fetchSettings = async () => {
@@ -199,6 +201,22 @@ onMounted(fetchSettings)
             <div class="form-group full-width">
               <label>Subtítulo Oferta</label>
               <input v-model="form.offerings_subtitle" type="text" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Pixel de seguimiento</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Meta Pixel ID</label>
+              <input v-model="form.meta_pixel_id" type="text" placeholder="123456789012345" />
+              <small>Se inyecta automáticamente en todas las páginas</small>
+            </div>
+            <div class="form-group">
+              <label>Google Tag Manager / GA4 ID</label>
+              <input v-model="form.gtm_id" type="text" placeholder="G-XXXXXXXXXX o GTM-XXXXXXX" />
+              <small>GTM o GA4</small>
             </div>
           </div>
         </div>

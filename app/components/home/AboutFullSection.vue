@@ -28,7 +28,6 @@ onMounted(async () => {
   <section class="about-full" id="nosotros">
     <div class="about-inner">
       <div class="about-text" data-reveal>
-        <UiSectionLabel>Sobre nosotros</UiSectionLabel>
         <h2>{{ title }}</h2>
         <p>{{ text }}</p>
         <ul class="about-points">
@@ -96,7 +95,7 @@ onMounted(async () => {
   font-size: clamp(38px, 5vw, 62px);
   line-height: 0.95;
   font-weight: 500;
-  margin: 16px 0 18px;
+  margin: 0 0 18px;
 }
 
 .about-text p {

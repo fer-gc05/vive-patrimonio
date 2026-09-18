@@ -59,10 +59,6 @@ const onCarouselScroll = () => {
   activeIndex.value = Math.max(0, Math.min(idx, filtered.value.length - 1))
 }
 
-const scrollToNextSection = () => {
-  document.querySelector('#carta')?.scrollIntoView({ behavior: 'smooth' })
-}
-
 watch(filtered, () => {
   activeIndex.value = 0
   if (carouselRef.value) carouselRef.value.scrollLeft = 0
@@ -120,8 +116,6 @@ onMounted(async () => {
         />
       </div>
       <p v-if="filtered.length > 1" class="carousel-hint">Desliza para ver más →</p>
-
-      <button class="jump-next" @click="scrollToNextSection">Ver bebidas ↓</button>
     </div>
 
     <UiSweaterModal v-if="selected" :sweater="selected" :whatsapp-link="whatsappLink" @close="close" />
@@ -135,7 +129,7 @@ onMounted(async () => {
 .menu-header p { color: var(--gray); line-height: 1.7; }
 .grid { max-width: 1200px; margin: 46px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
 .carousel-wrapper { max-width: 1200px; margin: 46px auto 0; position: relative; }
-.carousel-arrow, .carousel-dots, .carousel-hint, .jump-next { display: none; }
+.carousel-arrow, .carousel-dots, .carousel-hint { display: none; }
 .empty-state { max-width: 600px; margin: 40px auto 0; text-align: center; color: var(--gray); font-size: 14px; line-height: 1.7; }
 
 @include respond(desktop) { .grid { grid-template-columns: repeat(2, 1fr); } }
@@ -214,21 +208,6 @@ onMounted(async () => {
     letter-spacing: 0.8px;
     color: var(--gray);
     opacity: 0.8;
-  }
-  .jump-next {
-    display: block;
-    margin: 22px auto 0;
-    background: transparent;
-    border: 1px solid var(--green);
-    color: var(--green);
-    padding: 12px 22px;
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-    cursor: pointer;
-    transition: 0.3s;
-    &:hover { background: var(--green); color: #fff; }
   }
 }
 @include respond(mobile-sm) {

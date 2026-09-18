@@ -98,15 +98,21 @@ onMounted(async () => {
   }
 
   .experience-image {
-    height: 390px;
+    height: 300px;
   }
 
   .experience-content {
-    padding: 65px 25px;
+    padding: 48px 20px;
   }
 
   .experience-content h2 {
-    font-size: 50px;
+    font-size: 38px;
+    line-height: 0.95;
+  }
+
+  .experience-content p {
+    font-size: 14px;
+    line-height: 1.7;
   }
 }
 </style>

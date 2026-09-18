@@ -96,4 +96,6 @@ export interface Settings {
   vision_text: string | null
   offerings_title: string | null
   offerings_subtitle: string | null
+  meta_pixel_id: string | null
+  gtm_id: string | null
 }

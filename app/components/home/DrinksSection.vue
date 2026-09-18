@@ -71,10 +71,6 @@ const onCarouselScroll = () => {
   activeIndex.value = Math.max(0, Math.min(idx, filteredDrinks.value.length - 1))
 }
 
-const scrollToNextSection = () => {
-  document.querySelector('#comida')?.scrollIntoView({ behavior: 'smooth' })
-}
-
 watch(filteredDrinks, () => {
   activeIndex.value = 0
   if (carouselRef.value) carouselRef.value.scrollLeft = 0
@@ -145,9 +141,6 @@ onMounted(async () => {
         />
       </div>
       <p v-if="filteredDrinks.length > 1" class="carousel-hint">Desliza para ver más →</p>
-
-      <!-- Atajo a siguiente sección -->
-      <button class="jump-next" @click="scrollToNextSection">Ver comida ↓</button>
     </div>
 
     <UiDrinkModal v-if="selectedDrink" :drink="selectedDrink" @close="closeModal" />
@@ -200,8 +193,7 @@ onMounted(async () => {
 
 .carousel-arrow,
 .carousel-dots,
-.carousel-hint,
-.jump-next {
+.carousel-hint {
   display: none;
 }
 
@@ -339,26 +331,6 @@ onMounted(async () => {
     letter-spacing: 0.8px;
     color: var(--gray);
     opacity: 0.8;
-  }
-
-  .jump-next {
-    display: block;
-    margin: 22px auto 0;
-    background: transparent;
-    border: 1px solid var(--green);
-    color: var(--green);
-    padding: 12px 22px;
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-    cursor: pointer;
-    transition: 0.3s;
-
-    &:hover {
-      background: var(--green);
-      color: #fff;
-    }
   }
 }
 
