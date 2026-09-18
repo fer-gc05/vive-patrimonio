@@ -173,30 +173,29 @@ const scrollToSection = (event: Event, href: string) => {
   .nav {
     position: fixed;
     top: 68px;
+    left: 0;
     right: 0;
-    left: auto;
-    width: 300px;
-    max-width: 82vw;
-    height: calc(100dvh - 68px);
-    padding: 28px 24px;
+    width: 100%;
+    padding: 28px 16px 32px;
     background: var(--green-dark);
     flex-direction: column;
     align-items: flex-end;
-    gap: 22px;
-    transform: translateX(100%);
+    gap: 18px;
+    transform: translateY(-150%);
     transition: transform 0.32s ease;
-    box-shadow: -8px 0 24px rgba(0,0,0,0.25);
-    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     text-align: right;
   }
 
   .nav a {
     width: 100%;
     text-align: right;
+    font-size: 13px;
+    padding-right: 4px;
   }
 
   .nav.open {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
