@@ -33,6 +33,16 @@ const scrollToSection = (event: Event, href: string) => {
 
 <template>
   <header class="header">
+    <a href="#inicio" class="logo" @click="scrollToSection($event, '#inicio')">
+      <span class="logo-circle">
+        <img src="/icon.jpeg" alt="VP" />
+      </span>
+      <span class="logo-text">
+        <strong>VIVE</strong>
+        <small>PATRIMONIO</small>
+      </span>
+    </a>
+
     <button
       class="menu-button"
       aria-label="Abrir menú"
@@ -43,16 +53,6 @@ const scrollToSection = (event: Event, href: string) => {
       <span></span>
       <span></span>
     </button>
-
-    <a href="#inicio" class="logo" @click="scrollToSection($event, '#inicio')">
-      <span class="logo-circle">
-        <img src="/icon.jpeg" alt="VP" />
-      </span>
-      <span class="logo-text">
-        <strong>VIVE</strong>
-        <small>PATRIMONIO</small>
-      </span>
-    </a>
 
     <nav class="nav" :class="{ open: isOpen }" id="nav">
       <a
@@ -159,12 +159,6 @@ const scrollToSection = (event: Event, href: string) => {
   .header {
     height: 68px;
     padding: 0 16px;
-    justify-content: flex-start;
-  }
-
-  .logo {
-    order: 2;
-    flex: 1;
   }
 
   .logo-circle {
@@ -174,13 +168,13 @@ const scrollToSection = (event: Event, href: string) => {
 
   .menu-button {
     display: block;
-    order: 1;
   }
 
   .nav {
     position: fixed;
     top: 68px;
-    left: 0;
+    right: 0;
+    left: auto;
     width: 300px;
     max-width: 82vw;
     height: calc(100dvh - 68px);
@@ -189,9 +183,9 @@ const scrollToSection = (event: Event, href: string) => {
     flex-direction: column;
     align-items: flex-start;
     gap: 22px;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     transition: transform 0.32s ease;
-    box-shadow: 8px 0 24px rgba(0,0,0,0.25);
+    box-shadow: -8px 0 24px rgba(0,0,0,0.25);
     overflow-y: auto;
   }
 
