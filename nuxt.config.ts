@@ -22,7 +22,8 @@ export default defineNuxtConfig({
         lang: 'es'
       },
       link: [
-        { rel: 'icon', type: 'image/jpeg', href: '/icon.jpeg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
@@ -32,7 +33,19 @@ export default defineNuxtConfig({
       ],
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Vive Patrimonio, bar y restaurante frente al río Sinú. Disfruta bebidas, sabores típicos, tours en lancha y atardeceres inolvidables en Magangué, Colombia.' },
+        { name: 'theme-color', content: '#123b32' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Vive Patrimonio' },
+        { property: 'og:title', content: 'Vive Patrimonio | Bar y Restaurante Río Sinú' },
+        { property: 'og:description', content: 'Vive Patrimonio, bar y restaurante frente al río Sinú. Disfruta bebidas, sabores típicos, tours en lancha y atardeceres inolvidables en Magangué, Colombia.' },
+        { property: 'og:image', content: 'https://vivepatrimonio.com.co/img/hero.jpg' },
+        { property: 'og:url', content: 'https://vivepatrimonio.com.co/' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Vive Patrimonio | Bar y Restaurante Río Sinú' },
+        { name: 'twitter:description', content: 'Vive Patrimonio, bar y restaurante frente al río Sinú. Disfruta bebidas, sabores típicos, tours en lancha y atardeceres inolvidables en Magangué, Colombia.' },
+        { name: 'twitter:image', content: 'https://vivepatrimonio.com.co/img/hero.jpg' }
       ]
     }
   },
