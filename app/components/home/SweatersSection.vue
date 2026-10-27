@@ -29,8 +29,8 @@ const getScrollAmount = () => {
   if (!el) return 300
   const firstCard = el.firstElementChild as HTMLElement | null
   const gap = parseInt(getComputedStyle(el).columnGap || getComputedStyle(el).gap || '16', 10) || 16
-  if (firstCard) return firstCard.offsetWidth + gap
-  return el.clientWidth * 0.82
+    if (firstCard) return firstCard.offsetWidth + gap
+    return el.clientWidth - 48
 }
 
 const scrollPrev = () => {
@@ -46,7 +46,7 @@ const scrollToIndex = (index: number) => {
   if (!el) return
   const gap = parseInt(getComputedStyle(el).columnGap || getComputedStyle(el).gap || '16', 10) || 16
   const firstCard = el.firstElementChild as HTMLElement | null
-  const cardWidth = firstCard ? firstCard.offsetWidth + gap : el.clientWidth * 0.82
+    const cardWidth = firstCard ? firstCard.offsetWidth + gap : el.clientWidth - 48
   el.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
 }
 
@@ -154,8 +154,8 @@ onMounted(async () => {
     -ms-overflow-style: none;
     &::-webkit-scrollbar { display: none; }
     :deep(.sweater) {
-      flex: 0 0 82vw;
-      max-width: 340px;
+      flex: 0 0 calc(100% - 48px);
+      max-width: 320px;
       scroll-snap-align: center;
       scroll-snap-stop: always;
     }
@@ -215,7 +215,7 @@ onMounted(async () => {
     padding-left: 12px;
     padding-right: 12px;
     gap: 12px;
-    :deep(.sweater) { flex-basis: 84vw; }
+    :deep(.sweater) { flex-basis: calc(100% - 40px); }
   }
   .carousel-arrow { width: 34px; height: 34px; font-size: 20px; }
 }

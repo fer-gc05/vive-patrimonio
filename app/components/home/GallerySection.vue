@@ -9,8 +9,8 @@ const getScrollAmount = () => {
   if (!el) return 320
   const first = el.firstElementChild as HTMLElement | null
   const gap = parseInt(getComputedStyle(el).gap || '12', 10) || 12
-  if (first) return first.offsetWidth + gap
-  return el.clientWidth * 0.86
+    if (first) return first.offsetWidth + gap
+    return el.clientWidth - 40
 }
 const scrollPrev = () => carouselRef.value?.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' })
 const scrollNext = () => carouselRef.value?.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
@@ -19,7 +19,7 @@ const scrollToIndex = (i: number) => {
   if (!el) return
   const gap = parseInt(getComputedStyle(el).gap || '12', 10) || 12
   const first = el.firstElementChild as HTMLElement | null
-  const w = first ? first.offsetWidth + gap : el.clientWidth * 0.86
+    const w = first ? first.offsetWidth + gap : el.clientWidth - 40
   el.scrollTo({ left: w * i, behavior: 'smooth' })
 }
 const onScroll = () => {
@@ -169,8 +169,8 @@ onMounted(async () => {
   }
 
   .carousel-item {
-    flex: 0 0 86vw;
-    max-width: 380px;
+    flex: 0 0 calc(100% - 40px);
+    max-width: 360px;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     border-radius: 6px;

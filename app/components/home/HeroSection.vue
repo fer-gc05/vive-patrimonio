@@ -71,6 +71,8 @@ useHead({
 <style scoped lang="scss">
 .hero {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -114,6 +116,8 @@ useHead({
   position: relative;
   z-index: 2;
   width: min(1100px, 88%);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .hero h1 {
@@ -122,6 +126,9 @@ useHead({
   line-height: 0.85;
   font-weight: 500;
   margin: 25px 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .hero h1 em {
@@ -134,6 +141,7 @@ useHead({
   line-height: 1.8;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.85);
+  overflow-wrap: break-word;
 }
 
 .hero-actions {
@@ -141,6 +149,10 @@ useHead({
   gap: 14px;
   flex-wrap: wrap;
   margin-top: 35px;
+}
+
+.hero-actions > :deep(*) {
+  max-width: 100%;
 }
 
 .scroll {

@@ -6,6 +6,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -13,6 +15,12 @@ body {
   background: var(--cream);
   color: var(--black);
   overflow-x: hidden;
+  max-width: 100%;
+}
+
+main,
+section {
+  max-width: 100%;
 }
 
 img {

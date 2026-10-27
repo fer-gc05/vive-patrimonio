@@ -24,7 +24,7 @@ onMounted(() => {
 .back-to-top {
   position: fixed;
   right: 24px;
-  bottom: 32px;
+  bottom: 88px;
   width: 48px;
   height: 48px;
   border-radius: 50%;

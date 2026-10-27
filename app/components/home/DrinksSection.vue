@@ -41,8 +41,8 @@ const getScrollAmount = () => {
   if (!el) return 300
   const firstCard = el.firstElementChild as HTMLElement | null
   const gap = parseInt(getComputedStyle(el).columnGap || getComputedStyle(el).gap || '16', 10) || 16
-  if (firstCard) return firstCard.offsetWidth + gap
-  return el.clientWidth * 0.82
+    if (firstCard) return firstCard.offsetWidth + gap
+    return el.clientWidth - 48
 }
 
 const scrollPrev = () => {
@@ -58,7 +58,7 @@ const scrollToIndex = (index: number) => {
   if (!el) return
   const gap = parseInt(getComputedStyle(el).columnGap || getComputedStyle(el).gap || '16', 10) || 16
   const firstCard = el.firstElementChild as HTMLElement | null
-  const cardWidth = firstCard ? firstCard.offsetWidth + gap : el.clientWidth * 0.82
+    const cardWidth = firstCard ? firstCard.offsetWidth + gap : el.clientWidth - 48
   el.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
 }
 
@@ -257,8 +257,8 @@ onMounted(async () => {
 
     // Cada tarjeta se vuelve slide
     :deep(.drink) {
-      flex: 0 0 82vw;
-      max-width: 340px;
+      flex: 0 0 calc(100% - 48px);
+      max-width: 320px;
       scroll-snap-align: center;
       scroll-snap-stop: always;
     }
@@ -334,7 +334,7 @@ onMounted(async () => {
   }
 }
 
-@include respond(mobile-sm) {
+  @include respond(mobile-sm) {
   .menu {
     padding-left: 0;
     padding-right: 0;
@@ -346,7 +346,7 @@ onMounted(async () => {
     gap: 12px;
 
     :deep(.drink) {
-      flex-basis: 84vw;
+      flex-basis: calc(100% - 40px);
     }
   }
 
