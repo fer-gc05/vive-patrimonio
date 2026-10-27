@@ -98,4 +98,7 @@ export interface Settings {
   offerings_subtitle: string | null
   meta_pixel_id: string | null
   gtm_id: string | null
+  google_maps_url: string | null
+  google_review_url: string | null
+  address_text: string | null
 }

@@ -23,8 +23,8 @@ const form = ref({
   available: true
 })
 
-const categoryOrder = ['entradas', 'hamburguesas', 'desgranados', 'picadas']
-const categories = ['Entradas', 'Hamburguesas', 'Desgranados', 'Picadas']
+const categoryOrder = ['entradas', 'hamburguesas', 'sandwiches', 'desgranados', 'picadas']
+const categories = ['Entradas', 'Hamburguesas', 'Sándwiches', 'Desgranados', 'Picadas']
 
 const sortedDishes = computed(() => {
   return [...dishes.value].sort((a, b) => {

@@ -2,8 +2,23 @@
 const { fetchSettings } = useSettings()
 const whatsappNumber = ref('573001234567')
 const instagramUrl = ref('https://www.instagram.com/vivepatrimoni0/')
+const googleMapsUrl = ref('')
+const googleReviewUrl = ref('')
+const addressText = ref('')
 
 const whatsappLink = computed(() => `https://wa.me/${whatsappNumber.value}`)
+const hasMapsUrl = computed(() => isGoogleMapsUrl(googleMapsUrl.value))
+const hasReviewUrl = computed(() => isGoogleReviewUrl(googleReviewUrl.value))
+
+const isGoogleMapsUrl = (url: string) => {
+  if (!url) return false
+  return /^https:\/\/(maps\.app\.goo\.gl|maps\.google\.com|www\.google\.com\/maps)\/.+/i.test(url)
+}
+
+const isGoogleReviewUrl = (url: string) => {
+  if (!url) return false
+  return /^https:\/\/(maps\.app\.goo\.gl|search\.google\.com|www\.google\.com\/maps)\/.+/i.test(url)
+}
 
 onMounted(async () => {
   const settings = await fetchSettings()
@@ -12,6 +27,15 @@ onMounted(async () => {
   }
   if (settings?.instagram_url) {
     instagramUrl.value = settings.instagram_url
+  }
+  if (settings?.google_maps_url) {
+    googleMapsUrl.value = settings.google_maps_url
+  }
+  if (settings?.google_review_url) {
+    googleReviewUrl.value = settings.google_review_url
+  }
+  if (settings?.address_text) {
+    addressText.value = settings.address_text
   }
 })
 </script>
@@ -31,6 +55,26 @@ onMounted(async () => {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
           Instagram
         </a>
+      </div>
+
+      <div v-if="addressText || hasMapsUrl || hasReviewUrl" class="contact-location">
+        <div class="location-row">
+          <svg class="pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          <span v-if="addressText" class="location-address">{{ addressText }}</span>
+          <span v-else class="location-address">Encuentra Vive Patrimonio en Google Maps</span>
+        </div>
+
+        <div class="location-links">
+          <a v-if="hasMapsUrl" :href="googleMapsUrl" target="_blank" rel="noopener">
+            Cómo llegar
+          </a>
+          <a v-if="hasReviewUrl" :href="googleReviewUrl" target="_blank" rel="noopener">
+            Califícanos en Google
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -106,6 +150,52 @@ onMounted(async () => {
   color: #fff;
 }
 
+.contact-location {
+  margin-top: 42px;
+}
+
+.location-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.pin-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.location-address {
+  font-style: normal;
+}
+
+.location-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+
+  a {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+
+    &:hover {
+      border-bottom-color: var(--gold);
+    }
+  }
+}
+
 @include respond(tablet) {
   .contact {
     padding: 70px 22px;
@@ -121,6 +211,15 @@ onMounted(async () => {
 
   .contact-button {
     display: block;
+  }
+
+  .location-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .location-links {
+    gap: 18px;
   }
 }
 </style>

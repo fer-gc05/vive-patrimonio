@@ -279,3 +279,11 @@ create policy "Allow authenticated delete page_views" on page_views
 -- ============================================================
 alter table settings add column if not exists meta_pixel_id text;
 alter table settings add column if not exists gtm_id text;
+
+-- ============================================================
+-- Migración: Ubicación en Google Maps
+-- ============================================================
+alter table settings add column if not exists google_maps_url text;
+alter table settings add column if not exists google_review_url text;
+alter table settings add column if not exists address_text text;
+alter table settings drop column if exists google_maps_embed_url;

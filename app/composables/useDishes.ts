@@ -3,12 +3,13 @@ import type { Dish } from '~/types'
 export const useDishes = () => {
   const supabase = useSupabase()
 
-  const categoryOrder = ['entradas', 'hamburguesas', 'desgranados', 'picadas']
+  const categoryOrder = ['entradas', 'hamburguesas', 'sandwiches', 'desgranados', 'picadas']
 
   const categories = [
     { key: 'todos', label: 'Todas' },
     { key: 'entradas', label: 'Entradas' },
     { key: 'hamburguesas', label: 'Hamburguesas' },
+    { key: 'sandwiches', label: 'Sándwiches' },
     { key: 'desgranados', label: 'Desgranados' },
     { key: 'picadas', label: 'Picadas' }
   ]

@@ -31,7 +31,10 @@ const form = ref({
   offerings_title: '',
   offerings_subtitle: '',
   meta_pixel_id: '',
-  gtm_id: ''
+  gtm_id: '',
+  google_maps_url: '',
+  google_review_url: '',
+  address_text: ''
 })
 
 const fetchSettings = async () => {
@@ -125,6 +128,41 @@ onMounted(fetchSettings)
                 type="url"
                 placeholder="https://www.instagram.com/vivepatrimoni0/"
               />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Ubicación en Google Maps</h2>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>URL del lugar en Google Maps</label>
+              <input
+                v-model="form.google_maps_url"
+                type="url"
+                placeholder="https://maps.app.goo.gl/..."
+              />
+              <small>Se usa para el botón "Cómo llegar".</small>
+            </div>
+
+            <div class="form-group full-width">
+              <label>URL para dejar reseña (opcional)</label>
+              <input
+                v-model="form.google_review_url"
+                type="url"
+                placeholder="https://maps.app.goo.gl/..."
+              />
+              <small>Si la tienes, se muestra el botón "Califícanos en Google". Consíguela en Google Business &gt; Reseñas &gt; Solicitar reseñas.</small>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Dirección textual</label>
+              <textarea
+                v-model="form.address_text"
+                rows="2"
+                placeholder="Calle, barrio, ciudad"
+              ></textarea>
             </div>
           </div>
         </div>
